@@ -1,0 +1,12 @@
+{
+	"port": 8000,
+	"devPort": 8080,
+	"certPath": "./ssl/fullchain.pem",
+	"keyPath": "./ssl/privkey.pem",
+	"projectId": "botmaker-a4d43",
+	"googleApplicationCredentials": "./credentials/key.json",
+	"cookieSeed": "keyboard cat",
+	"languageCode": "fr",
+	"vocalEncoding": "AUDIO_ENCODING_LINEAR16",
+	"uploadDir": "./uploads"
+}

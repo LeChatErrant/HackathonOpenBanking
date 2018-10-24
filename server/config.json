@@ -1,0 +1,7 @@
+{
+	"port": 8000,
+	"devPort": 8080,
+	"certPath": "./ssl/fullchain.pem",
+	"keyPath": "./ssl/privkey.pem",
+	"cookieSeed": "the keyboard cat"
+}
