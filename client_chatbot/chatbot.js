@@ -3,7 +3,7 @@ const dialogflow = require('dialogflow').v2beta1;
 
 //configuration
 const sessionClient = new dialogflow.SessionsClient();
-const projetId = config.projetId;
+const projectId = config.projetId;
 const sessionId = "single user";
 const session = sessionClient.sessionPath(projectId, sessionId);
 const languageCode = config.languageCode;
