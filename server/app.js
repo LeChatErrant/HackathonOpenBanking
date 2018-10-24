@@ -39,18 +39,12 @@ const httpsServer = https.createServer({
 }, app).listen(port);
 console.log(`Listening on ${port} with HTTPS...`);
 
-//HTTP handling, for developper
-app.listen(config.devPort);
-console.log(`Listening on ${config.devPort} without HTTPS (developper mode)...`);
-
 //ROUTING
 app.use('/', routes);
 
 //Socket.IO server
-const http = require('http').Server(app);
 const io = require('socket.io')(httpsServer);
 io.on('connection', function(socket){
 	console.log('a user connected');
 	socket.on('test', (e) => console.log(e));
 });
-http.listen(config.socketIOPort, () => console.log(`Listening on ${config.socketIOPort} with socket.IO...`));
