@@ -45,6 +45,7 @@ app.use('/', routes);
 //Socket.IO server
 const io = require('socket.io')(httpsServer);
 io.on('connection', function(socket){
-	console.log('a user connected');
-	socket.on('test', (e) => console.log(e));
+	console.log('A new user connected');
+	socket.on('disconnect', () => console.log("A user disconnected"));
+	socket.emit('activate', "bijour");
 });

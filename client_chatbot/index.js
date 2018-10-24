@@ -12,11 +12,8 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = path.resolve(config.googleApplicati
 //Socket.IO client
 const io = require('socket.io-client');
 var socket = io.connect(config.serverURL, {reconnect: true});
-
-socket.on('connect', () => {
-  console.log("Connected!");
-});
-socket.emit('test', 'test msg');
+socket.on('connect', () => console.log("Connected!"));
+socket.on('activate', data => require('./chatbot').chatbot(data));
 
 //creating record dir
 if (!fs.existsSync(config.recordDir)) {
