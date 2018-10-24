@@ -9,7 +9,7 @@ const unrecognizedAction = (response) => {
 exports.webhook = (req, res) => {
 	const body = req.body;
 	console.log("BODY: ", body);
-	const action = req.body.action;
+	const action = body.queryResult.action;
 	console.log("ACTION: ", action);
 	const parameters = body.queryResult.parameters;
 	console.log("PARAMETERS: ", parameters);
