@@ -30,5 +30,5 @@ exports.chatbot = async (data) => {
 	//	const res = await text("dab", sessionClient, session);
 	await record(2);
 	const recorded = fs.readFileSync("./record.wav")
-	await vocal(recorded);
+	await vocal(recorded, sessionClient, session);
 }
