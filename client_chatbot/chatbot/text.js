@@ -26,11 +26,11 @@ exports.text = (input, sessionClient, session) => {
 			}
 			console.log("Result:");
 			console.log(result.fulfillmentText);
-			console.log("\n\n");
+			console.log("\n");
 			resolve(result.fulfillmentText);
 		})
 		.catch(err => {
-			console.error('\nERROR:\n', err, '\n\n');
+			console.error('\nERROR:\n', err, '\n');
 			resolve("Error");
 		});
 	});

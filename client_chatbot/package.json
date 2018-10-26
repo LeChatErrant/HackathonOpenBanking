@@ -12,6 +12,8 @@
   "dependencies": {
     "dialogflow": "^0.7.0",
     "fs": "0.0.1-security",
+    "node-audiorecorder": "^1.1.5",
+    "node-record-lpcm16": "^0.3.1",
     "path": "^0.12.7",
     "socket.io-client": "^2.1.1"
   }
