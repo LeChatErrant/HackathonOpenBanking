@@ -47,5 +47,10 @@ const io = require('socket.io')(httpsServer);
 io.on('connection', function(socket){
 	console.log('A new user connected\n');
 	socket.on('disconnect', () => console.log("A user disconnected\n"));
-	socket.emit('activate', {});
+
+	//Testing purpose only, to delete before release
+	var stdin = process.openStdin();
+	stdin.on('data', chunk => {
+		socket.emit('activate', {});
+	});
 });
