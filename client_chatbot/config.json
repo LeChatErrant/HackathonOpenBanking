@@ -2,7 +2,7 @@
 	"projectId": "inmoov-21904",
 	"googleApplicationCredentials": "./credentials/key.json",
 	"languageCode": "fr",
-	"vocalEncoding": "AUDIO_ENCODING_LINEAR16",
+	"audioEncoding": "AUDIO_ENCODING_LINEAR16",
 	"recordDir": "./uploads",
 	"serverURL": "https://kamino-google-home.francecentral.cloudapp.azure.com:8000"
 }

@@ -1,6 +1,7 @@
 const config = require("../config.json");
 
 const languageCode = config.languageCode;
+const audioEncoding = config.audioEncoding;
 
 exports.vocal = (input, sessionClient, session) => {
 	return new Promise((resolve, reject) => {
@@ -9,6 +10,7 @@ exports.vocal = (input, sessionClient, session) => {
 			queryInput: {
 				audioConfig: {
 					languageCode: languageCode,
+					audioEncoding: audioEncoding
 				},
 			},
 			inputAudio: input
