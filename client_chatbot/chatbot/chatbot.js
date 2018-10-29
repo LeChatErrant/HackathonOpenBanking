@@ -27,9 +27,21 @@ const record = (sec) => {
 	});
 }
 
+const play = () => {
+	exec(`aplay output.wav`, (err, stdout, stderr) => {
+		console.log("Play DONE");
+		if (err) {
+			console.log("\n\nERROR\n", err);
+		} else {
+			console.log(stdout);
+		}
+	})
+}
+
 exports.chatbot = async (data) => {
 	//	const res = await text("dab", sessionClient, session);
 	await record(2);
 	const recorded = fs.readFileSync("./record.wav")
 	await vocal(recorded, sessionClient, session);
+	play();
 }
