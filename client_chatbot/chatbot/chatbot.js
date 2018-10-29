@@ -13,6 +13,7 @@ const session = sessionClient.sessionPath(projectId, sessionId);
 
 const record = (sec) => {
 	return new Promise((resolve, reject) => {
+		console.log("Record started!");
 		exec(`arecord -c 1 -f S16_LE -r 16000 -t wav -D plughw:1 -d ${sec} record.wav`, (err, stdout, stderr) => {
 			console.log("Record DONE");
 			if (err) {

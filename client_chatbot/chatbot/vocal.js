@@ -23,6 +23,7 @@ exports.vocal = (input, sessionClient, session) => {
 		.detectIntent(request)
 		.then(responses => {
 			const audioFile = responses[0].outputAudio;
+			console.log(audioFile);
 			require('fs').writeFileSync("./output.wav", audioFile);
 
 
