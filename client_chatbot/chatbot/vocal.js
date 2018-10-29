@@ -26,8 +26,7 @@ exports.vocal = (input, sessionClient, session) => {
 			console.log(audioFile);
 			require('fs').writeFileSync("./output.wav", audioFile);
 
-
-/*			let	 result = responses[0].queryResult;
+			let	 result = responses[0].queryResult;
 			console.log(`  Query: ${result.queryText}`);
 			if (result.intent) {
 				console.log(`  Intent: ${result.intent.displayName}\n`);
@@ -39,7 +38,6 @@ exports.vocal = (input, sessionClient, session) => {
 			console.log("\n");
 			resolve(result.fulfillmentText);
 
-			*/
 		})
 		.catch(err => {
 			console.error('\nERROR:\n', err, '\n');
