@@ -1,5 +1,5 @@
 const config = require("../config.json");
-const dialogflow = require('dialogflow');
+const dialogflow = require('dialogflow').v2beta1;
 const exec = require('child_process').exec;
 const fs = require('fs');
 const text = require('./text').text;
