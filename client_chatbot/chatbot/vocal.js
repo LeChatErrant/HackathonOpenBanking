@@ -13,13 +13,20 @@ exports.vocal = (input, sessionClient, session) => {
 					audioEncoding: audioEncoding
 				},
 			},
-			inputAudio: input
+			inputAudio: input,
+			outputAudioConfig: {
+				audioEncoding: `OUTPUT_AUDIO_ENCODING_LINEAR_16`,
+			}
 		};
 
 		sessionClient
 		.detectIntent(request)
 		.then(responses => {
-			let	 result = responses[0].queryResult;
+			const audioFile = responses[0].outputAudio;
+			require('fs').writeFileSync("./output.wav", audioFile);
+
+
+/*			let	 result = responses[0].queryResult;
 			console.log(`  Query: ${result.queryText}`);
 			if (result.intent) {
 				console.log(`  Intent: ${result.intent.displayName}\n`);
@@ -30,6 +37,8 @@ exports.vocal = (input, sessionClient, session) => {
 			console.log(result.fulfillmentText);
 			console.log("\n");
 			resolve(result.fulfillmentText);
+
+			*/
 		})
 		.catch(err => {
 			console.error('\nERROR:\n', err, '\n');
