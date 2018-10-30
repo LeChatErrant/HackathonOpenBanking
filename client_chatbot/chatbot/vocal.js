@@ -23,6 +23,7 @@ const stop = () => {
 }
 
 const play = (filePath) => {
+	timer = undefined;
 	exec(`aplay ${filePath}`, (err, stdout, stderr) => {
 		console.log("Play DONE");
 		if (err) {
