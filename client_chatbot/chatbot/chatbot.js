@@ -1,6 +1,5 @@
 const config = require("../config.json");
 const dialogflow = require('dialogflow').v2beta1;
-const exec = require('child_process').exec;
 const fs = require('fs');
 const text = require('./text').text;
 const vocal = require('./vocal').vocal;
@@ -11,37 +10,33 @@ const projectId = config.projectId;
 const sessionId = "08KLA9wKN9djP3wnS3nd1sv8A1VQVRip";
 const session = sessionClient.sessionPath(projectId, sessionId);
 
-const record = (sec) => {
+const record = () => {
 	return new Promise((resolve, reject) => {
 		console.log("Record started!");
-		exec(`arecord -c 1 -f S16_LE -r 16000 -t wav -D plughw:1 -d ${sec} record.wav`, (err, stdout, stderr) => {
-			console.log("Record DONE");
-			if (err) {
-				console.log("\n\nERROR\n", err);
-				resolve();
-			} else {
-				console.log(stdout);
-				resolve();
-			}
-		});
+		const cmd = spawn("arecord", [ "-c", "1", "-f", "S16_LE", "-r", "16000", "-t", "wav"]);
+		resolve(cmd);
+		cmd.stderr.on('data', data=>console.log(data.toString()));
 	});
 }
 
-const play = () => {
-	exec(`aplay output.wav`, (err, stdout, stderr) => {
+const stop = () => {
+	prg.kill();
+}
+
+const play = (filePath) => {
+	exec(`aplay ${filePath}`, (err, stdout, stderr) => {
 		console.log("Play DONE");
 		if (err) {
 			console.log("\n\nERROR\n", err);
 		} else {
 			console.log(stdout);
 		}
-	})
+	});
 }
 
 exports.chatbot = async (data) => {
-	//	const res = await text("dab", sessionClient, session);
 	await record(2);
 	const recorded = fs.readFileSync("./record.wav")
-	await vocal(recorded, sessionClient, session);
-	play();
+	await vocal(filePath, sessionClient, session);
+	play("output.wav");
 }
