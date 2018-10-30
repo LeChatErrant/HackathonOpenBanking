@@ -12,7 +12,7 @@ let timer;
 const record = () => {
 	return new Promise((resolve, reject) => {
 		console.log("Record started!");
-		const cmd = spawn("arecord", [ "-c", "1", "-f", "S16_LE", "-r", "16000", "-t", "wav"]);
+		const cmd = spawn("arecord", [ "-D" ,"plughw:1", "-c", "1", "-f", "S16_LE", "-r", "16000", "-t", "wav"]);
 		resolve(cmd);
 		cmd.stderr.on('data', data=>console.log(data.toString()));
 	});
