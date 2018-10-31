@@ -17,7 +17,7 @@ const play = (filePath) => {
 }
 
 exports.text = (input, filePath, sessionClient, session) => {
-	return new Promise((resolve, reject) => {
+	let myPromise = new Promise( (resolve, reject) => {
 		const request = {
 			session: session,
 			queryInput: {
@@ -33,8 +33,8 @@ exports.text = (input, filePath, sessionClient, session) => {
 
 		sessionClient
 		.detectIntent(request)
-		.then(responses => {
-			let	 result = responses[0].queryResult;
+		.then(async responses => {
+			let result = responses[0].queryResult;
 			console.log(`  Query: ${result.queryText}`);
 			if (result.intent) {
 				console.log(`  Intent: ${result.intent.displayName}\n`);
@@ -46,11 +46,12 @@ exports.text = (input, filePath, sessionClient, session) => {
 			console.log("\n");
 			fs.writeFile(filePath, responses[0].outputAudio);
 			await play(filePath)
-			resolve();
+			myPromise.resolve();
 		})
 		.catch(err => {
 			console.error('\nERROR:\n', err, '\n');
-			resolve("Error");
+			myPromise.resolve("Error");
 		});
 	});
+	return myPromise;
 }
