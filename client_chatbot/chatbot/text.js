@@ -50,7 +50,7 @@ exports.text = (input, filePath, sessionClient, session) => {
 			console.log("Result:");
 			console.log(result.fulfillmentText);
 			console.log("\n");
-			fs.writeFile(filePath, responses[0].outputAudio);
+			fs.writeFileSync(filePath, responses[0].outputAudio);
 			await play(filePath)
 			resolve();
 		})
