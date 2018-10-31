@@ -4,7 +4,7 @@ const through2 = require('through2');
 const config = require("../config.json");
 
 const spawn = require('child_process').spawn;
-const exec = require('child_process').exec;
+const exec = require('child_process').execSync;
 
 let prg;
 let timer;
@@ -25,7 +25,11 @@ const stop = () => {
 
 const play = (filePath) => {
 	return new Promise((resolve, reject) => {
-		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
+		console.log("Play started");
+		exec(`aplay ${filePath}`);
+		console.log("Play finished");
+		resolve();
+/*		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
 			console.log("Play DONE");
 			if (err) {
 				console.log("\n\nERROR\n", err);
@@ -33,7 +37,7 @@ const play = (filePath) => {
 				console.log(stdout);
 			}
 			resolve();
-		});
+		});*/
 	});
 }
 

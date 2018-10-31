@@ -1,12 +1,16 @@
 const fs = require('fs');
-const exec = require("child_process").exec;
+const exec = require("child_process").execSync;
 const config = require("../config.json");
 
 const languageCode = config.languageCode;
 
 const play = (filePath) => {
 	return new Promise((resolve, reject) => {
-		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
+		console.log("Play started");
+		exec(`aplay ${filePath}`);
+		console.log("Play finished");
+		resolve();
+/*		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
 			console.log("Play DONE");
 			if (err) {
 				console.log("\n\nERROR\n", err);
@@ -14,7 +18,7 @@ const play = (filePath) => {
 				console.log(stdout);
 			}
 			resolve();
-		});
+		});*/
 	});
 }
 
