@@ -19,7 +19,6 @@ const record = () => {
 }
 
 const stop = () => {
-	timer = undefined;
 	prg.kill();
 }
 
@@ -53,6 +52,7 @@ class Timer {
 			this.actual += 100;
 			console.log(this.actual);
 			if (this.actual >= this.timeout) {
+				this.isFinished = true;
 				clearInterval(this.check);
 				console.log("TIMER ENDED");
 				this.callback()
@@ -65,6 +65,7 @@ class Timer {
 	}
 
 	finish() {
+		this.isFinished = true;
 		clearInterval(this.check);
 		console.log("TIMER FORCE ENDED");
 		this.callback();
@@ -95,7 +96,7 @@ const handleData = async (data, filePath, resolve, toggle) => {
 		if (data.recognitionResult.isFinal === true) {
 			console.log(data);
 			console.log("FINAAAAAL");
-			if (timer) {
+			if (!timer.isFinished) {
 				timer.finish();
 			}
 		}
@@ -114,6 +115,7 @@ const handleData = async (data, filePath, resolve, toggle) => {
 		} else {
 			fs.writeFileSync(filePath, data.outputAudio);
 			await play(filePath);
+			timer = undefined;
 			resolve();
 		}
 	}
