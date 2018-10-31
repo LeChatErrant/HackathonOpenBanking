@@ -12,7 +12,7 @@ const projectId = config.projectId;
 const sessionId = "08KLA9wKN9djP3wnS3nd1sv8A1VQVRip";
 const session = sessionClient.sessionPath(projectId, sessionId);
 
-const rec = () => {
+const rec = async () => {
 	console.log("Starting the reply from the user...");
 	await vocal("./vocal.wav", toggle, sessionClient, session);
 	console.log("Reply from the user resolved!");
