@@ -24,16 +24,18 @@ const stop = () => {
 }
 
 const play = (filePath) => {
-	exec(`aplay ${filePath}`, (err, stdout, stderr) => {
-		console.log("Play DONE");
-		if (err) {
-			console.log("\n\nERROR\n", err);
-		} else {
-			console.log(stdout);
-		}
+	return new Promise((resolve, reject) => {
+		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
+			console.log("Play DONE");
+			if (err) {
+				console.log("\n\nERROR\n", err);
+			} else {
+				console.log(stdout);
+			}
+			resolve();
+		});
 	});
 }
-
 
 class Timer {
 	constructor(timeout, callback) {
@@ -63,13 +65,23 @@ class Timer {
 		console.log("TIMER FORCE ENDED");
 		this.callback();
 	}
+
+	stopWhen(obj, ref, state) {
+		let tmp = setInterval(() => {
+			if (obj[ref] === state) {
+				clearInterval(tmp);
+				this.finish();
+			}
+		}, 100);
+	}
 }
 
 
-const handleData = (data, filePath) => {
+const handleData = async (data, filePath, myPromise, toggle) => {
 	if (!timer) {
 		timer = new Timer(2000, stop);
 		timer.start();
+		timer.stopWhen(toggle, "toggle", false);
 	}
 	if (data.recognitionResult) {
 		timer.reset();
@@ -95,43 +107,47 @@ const handleData = (data, filePath) => {
 			console.log("\n");
 		} else {
 			fs.writeFileSync(filePath, data.outputAudio);
-			play(filePath);
+			await play(filePath);
+			myPromise.resolve();
 		}
 	}
 }
 
-exports.vocal = async (filePath, sessionClient, session) => {
-	const initialStreamRequest = {
-		session: session,
-		queryParams: {
+exports.vocal = async (filePath, toggle, sessionClient, session) => {
+	const myPromise = new Promise((resolve, reject) => {
+		const initialStreamRequest = {
 			session: session,
-		},
-		queryInput: {
-			audioConfig: {
-				audioEncoding: config.audioEncoding,
-				languageCode: config.languageCode
+			queryParams: {
+				session: session,
 			},
-			singleUtterance: true,
-		},
-		outputAudioConfig: {
-			audioEncoding: `OUTPUT_AUDIO_ENCODING_LINEAR_16`,
-		}
-	};
+			queryInput: {
+				audioConfig: {
+					audioEncoding: config.audioEncoding,
+					languageCode: config.languageCode
+				},
+				singleUtterance: true,
+			},
+			outputAudioConfig: {
+				audioEncoding: `OUTPUT_AUDIO_ENCODING_LINEAR_16`,
+			}
+		};
 
-	const detectStream = sessionClient
-	.streamingDetectIntent()
-	.on('error', console.error)
-	.on('data', data => handleData(data, filePath));
+		const detectStream = sessionClient
+		.streamingDetectIntent()
+		.on('error', console.error)
+		.on('data', data => handleData(data, filePath, myPromise, toggle));
 
-	// Write the initial stream request to config for audio input.
-	detectStream.write(initialStreamRequest);
+		// Write the initial stream request to config for audio input.
+		detectStream.write(initialStreamRequest);
 
-	prg = await record();
-	pump(
-		prg.stdout,
-		through2.obj((obj, _, next) => {
-			next(null, {inputAudio: obj});
-		}),
-		detectStream
-	);
+		prg = await record();
+		pump(
+			prg.stdout,
+			through2.obj((obj, _, next) => {
+				next(null, {inputAudio: obj});
+			}),
+			detectStream
+		);
+	});
+	return myPromise;
 }

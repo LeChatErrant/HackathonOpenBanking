@@ -50,7 +50,14 @@ io.on('connection', function(socket){
 
 	//Testing purpose only, to delete before release
 	var stdin = process.openStdin();
+	let toggle = false;
 	stdin.on('data', chunk => {
-		socket.emit('activate', {});
+		if (toggle === false) {
+			socket.emit('activate', {name: "Gerard"});
+			toggle = true;
+		} else {
+			socket.emit('desactivate');
+			toggle = false;
+		}
 	});
 });

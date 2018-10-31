@@ -2,7 +2,21 @@ const config = require("../config.json");
 
 const languageCode = config.languageCode;
 
-exports.text = (input, sessionClient, session) => {
+const play = (filePath) => {
+	return new Promise((resolve, reject) => {
+		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
+			console.log("Play DONE");
+			if (err) {
+				console.log("\n\nERROR\n", err);
+			} else {
+				console.log(stdout);
+			}
+			resolve();
+		});
+	});
+}
+
+exports.text = (input, filePath, sessionClient, session) => {
 	return new Promise((resolve, reject) => {
 		const request = {
 			session: session,
@@ -12,6 +26,9 @@ exports.text = (input, sessionClient, session) => {
 					languageCode: languageCode,
 				},
 			},
+			outputAudioConfig: {
+				audioEncoding: `OUTPUT_AUDIO_ENCODING_LINEAR_16`,
+			}
 		};
 
 		sessionClient
@@ -27,7 +44,9 @@ exports.text = (input, sessionClient, session) => {
 			console.log("Result:");
 			console.log(result.fulfillmentText);
 			console.log("\n");
-			resolve(result.fulfillmentText);
+			fs.writeFile(filePath, responses[0].outputAudio);
+			await play(filePath)
+			resolve();
 		})
 		.catch(err => {
 			console.error('\nERROR:\n', err, '\n');

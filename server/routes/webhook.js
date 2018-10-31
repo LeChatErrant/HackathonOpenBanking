@@ -1,5 +1,5 @@
-const test = (response) => {
-	response.fulfillmentText = "Test worked!";
+const welcomeLogged = (response) => {
+//	response.fulfillmentText = "Nickel, ca marche bien!";
 }
 
 const unrecognizedAction = (response) => {
@@ -15,8 +15,8 @@ exports.webhook = (req, res) => {
 	console.log("PARAMETERS: ", parameters);
 	let response = {};
 
-	if (action === "test") {
-		test(response);
+	if (action === "input.welcome") {
+		welcomeLogged(response);
 	} else {
 		unrecognizedAction(response);
 	}
