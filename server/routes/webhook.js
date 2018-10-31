@@ -1,5 +1,9 @@
-const welcomeLogged = (response) => {
-//	response.fulfillmentText = "Nickel, ca marche bien!";
+const fs = require("fs");
+
+const welcomeLogged = (body, response) => {
+	console.log(body);
+	fs.writeFileSync("./test.json", body);
+	response.fulfillmentText = "Nickel, ca marche bien!";
 }
 
 const unrecognizedAction = (response) => {
@@ -16,7 +20,7 @@ exports.webhook = (req, res) => {
 	let response = {};
 
 	if (action === "input.welcome") {
-		welcomeLogged(response);
+		welcomeLogged(body, response);
 	} else {
 		unrecognizedAction(response);
 	}
