@@ -81,7 +81,7 @@ class Timer {
 }
 
 
-const handleData = async (data, filePath, myPromise, toggle) => {
+const handleData = async (data, filePath, resolve, toggle) => {
 	if (!timer) {
 		timer = new Timer(2000, stop);
 		timer.start();
@@ -112,13 +112,13 @@ const handleData = async (data, filePath, myPromise, toggle) => {
 		} else {
 			fs.writeFileSync(filePath, data.outputAudio);
 			await play(filePath);
-			myPromise.resolve();
+			resolve();
 		}
 	}
 }
 
 exports.vocal = (filePath, toggle, sessionClient, session) => {
-	const myPromise = new Promise(async (resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		const initialStreamRequest = {
 			session: session,
 			queryParams: {
@@ -139,7 +139,7 @@ exports.vocal = (filePath, toggle, sessionClient, session) => {
 		const detectStream = sessionClient
 		.streamingDetectIntent()
 		.on('error', console.error)
-		.on('data', data => handleData(data, filePath, myPromise, toggle));
+		.on('data', data => handleData(data, filePath, resolve, toggle));
 
 		// Write the initial stream request to config for audio input.
 		detectStream.write(initialStreamRequest);
@@ -153,5 +153,4 @@ exports.vocal = (filePath, toggle, sessionClient, session) => {
 			detectStream
 		);
 	});
-	return myPromise;
 }
