@@ -76,6 +76,7 @@ class Timer {
 			if (obj[ref] === state) {
 				clearInterval(tmp);
 				this.finish();
+				timer = undefined;
 			}
 		}, 100);
 	}
