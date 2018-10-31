@@ -20,10 +20,10 @@ const record = () => {
 
 const stop = () => {
 	prg.kill();
+	timer = undefined;
 }
 
 const play = (filePath) => {
-	timer = undefined;
 	exec(`aplay ${filePath}`, (err, stdout, stderr) => {
 		console.log("Play DONE");
 		if (err) {
@@ -57,6 +57,12 @@ class Timer {
 	reset() {
 		this.actual = 0;
 	}
+
+	finish() {
+		clearInterval(this.check);
+		console.log("TIMER FORCE ENDED");
+		this.callback();
+	}
 }
 
 
@@ -67,13 +73,14 @@ const handleData = (data, filePath) => {
 	}
 	if (data.recognitionResult) {
 		timer.reset();
-		if (data.recognitionResult.isFinal === true) {
-			console.log(data);
-			console.log("FINAAAAAL");
-		}
 		console.log(
 			`Intermediate transcript: ${data.recognitionResult.transcript}`
 		);
+		if (data.recognitionResult.isFinal === true) {
+			console.log(data);
+			console.log("FINAAAAAL");
+			timer.finish();
+		}
 	} else {
 		if (data.queryResult) {
 			let result = data.queryResult;
