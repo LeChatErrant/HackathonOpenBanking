@@ -113,8 +113,8 @@ const handleData = async (data, filePath, myPromise, toggle) => {
 	}
 }
 
-exports.vocal = async (filePath, toggle, sessionClient, session) => {
-	const myPromise = new Promise((resolve, reject) => {
+exports.vocal = (filePath, toggle, sessionClient, session) => {
+	const myPromise = new Promise(async (resolve, reject) => {
 		const initialStreamRequest = {
 			session: session,
 			queryParams: {
