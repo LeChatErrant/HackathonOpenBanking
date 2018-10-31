@@ -19,8 +19,8 @@ const record = () => {
 }
 
 const stop = () => {
-	prg.kill();
 	timer = undefined;
+	prg.kill();
 }
 
 const play = (filePath) => {
@@ -29,7 +29,7 @@ const play = (filePath) => {
 		exec(`aplay ${filePath}`);
 		console.log("Play finished");
 		resolve();
-/*		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
+		/*		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
 			console.log("Play DONE");
 			if (err) {
 				console.log("\n\nERROR\n", err);
@@ -95,7 +95,9 @@ const handleData = async (data, filePath, resolve, toggle) => {
 		if (data.recognitionResult.isFinal === true) {
 			console.log(data);
 			console.log("FINAAAAAL");
-			timer.finish();
+			if (timer) {
+				timer.finish();
+			}
 		}
 	} else {
 		if (data.queryResult) {
