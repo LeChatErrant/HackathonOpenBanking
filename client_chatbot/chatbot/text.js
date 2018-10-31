@@ -17,7 +17,7 @@ const play = (filePath) => {
 }
 
 exports.text = (input, filePath, sessionClient, session) => {
-	let myPromise = new Promise( (resolve, reject) => {
+	return new Promise( (resolve, reject) => {
 		const request = {
 			session: session,
 			queryInput: {
@@ -46,12 +46,11 @@ exports.text = (input, filePath, sessionClient, session) => {
 			console.log("\n");
 			fs.writeFile(filePath, responses[0].outputAudio);
 			await play(filePath)
-			myPromise.resolve();
+			resolve();
 		})
 		.catch(err => {
 			console.error('\nERROR:\n', err, '\n');
-			myPromise.resolve("Error");
+			resolve("Error");
 		});
 	});
-	return myPromise;
 }
