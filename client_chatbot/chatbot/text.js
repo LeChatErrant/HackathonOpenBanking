@@ -4,25 +4,18 @@ const config = require("../config.json");
 
 const languageCode = config.languageCode;
 
-const play = (filePath) => {
+const play = (filePath, jaw) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
+		jaw.stdin.write("Speak");
 		exec(`aplay ${filePath}`);
+		jaw.stdin.write("Stop");
 		console.log("Play finished");
 		resolve();
-/*		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
-			console.log("Play DONE");
-			if (err) {
-				console.log("\n\nERROR\n", err);
-			} else {
-				console.log(stdout);
-			}
-			resolve();
-		});*/
 	});
 }
 
-exports.text = (input, filePath, sessionClient, session) => {
+exports.text = (input, filePath, sessionClient, session, jaw) => {
 	return new Promise( (resolve, reject) => {
 		const request = {
 			session: session,
@@ -51,7 +44,7 @@ exports.text = (input, filePath, sessionClient, session) => {
 			console.log(result.fulfillmentText);
 			console.log("\n");
 			fs.writeFileSync(filePath, responses[0].outputAudio);
-			await play(filePath)
+			await play(filePath, jaw);
 			resolve();
 		})
 		.catch(err => {

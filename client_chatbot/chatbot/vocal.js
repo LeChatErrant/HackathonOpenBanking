@@ -22,21 +22,14 @@ const stop = () => {
 	prg.kill();
 }
 
-const play = (filePath) => {
+const play = (filePath, jaw) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
+		jaw.stdin.write("Speak");
 		exec(`aplay ${filePath}`);
+		jaw.stdin.write("Stop");
 		console.log("Play finished");
 		resolve();
-		/*		exec(`aplay ${filePath}`, (err, stdout, stderr) => {
-			console.log("Play DONE");
-			if (err) {
-				console.log("\n\nERROR\n", err);
-			} else {
-				console.log(stdout);
-			}
-			resolve();
-		});*/
 	});
 }
 
@@ -83,7 +76,7 @@ class Timer {
 }
 
 
-const handleData = async (data, filePath, resolve, toggle) => {
+const handleData = async (data, filePath, resolve, toggle, jaw) => {
 	if (!timer) {
 		timer = new Timer(2000, stop);
 		timer.start();
@@ -93,7 +86,7 @@ const handleData = async (data, filePath, resolve, toggle) => {
 		timer.reset();
 		console.log(
 			`Intermediate transcript: ${data.recognitionResult.transcript}`
-		);
+		);s
 		if (data.recognitionResult.isFinal === true) {
 			console.log(data);
 			console.log("FINAAAAAL");
@@ -115,14 +108,14 @@ const handleData = async (data, filePath, resolve, toggle) => {
 			console.log("\n");
 		} else {
 			fs.writeFileSync(filePath, data.outputAudio);
-			await play(filePath);
+			await play(filePath, jaw);
 			timer = undefined;
 			resolve();
 		}
 	}
 }
 
-exports.vocal = (filePath, toggle, sessionClient, session) => {
+exports.vocal = (filePath, toggle, sessionClient, session, jaw) => {
 	return new Promise(async (resolve, reject) => {
 		const initialStreamRequest = {
 			session: session,
@@ -144,7 +137,7 @@ exports.vocal = (filePath, toggle, sessionClient, session) => {
 		const detectStream = sessionClient
 		.streamingDetectIntent()
 		.on('error', console.error)
-		.on('data', data => handleData(data, filePath, resolve, toggle));
+		.on('data', data => handleData(data, filePath, resolve, toggle, jaw));
 
 		// Write the initial stream request to config for audio input.
 		detectStream.write(initialStreamRequest);

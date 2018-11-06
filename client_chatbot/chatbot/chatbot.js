@@ -14,21 +14,21 @@ const session = sessionClient.sessionPath(projectId, sessionId);
 
 const rec = async () => {
 	console.log("Starting the reply from the user...");
-	await vocal("./vocal.wav", toggle, sessionClient, session);
+	await vocal("./vocal.wav", toggle, sessionClient, session, jaw);
 	console.log("Reply from the user resolved!");
 	if (toggle.toggle === true) {
 		rec();
 	}
 }
 
-exports.chatbot = async (socket, data) => {
+exports.chatbot = async (socket, jaw, data) => {
 	console.log("InMoov activated! Metadata: \n", data);
 
 	toggle.toggle = true;
 	socket.on('desactivate', () => toggle.toggle = false);
 
 	console.log("Initializing the conversation...");
-	await text("Nom d'utilisateur: " + data.name, "./vocal.wav", sessionClient, session);
+	await text("Nom d'utilisateur: " + data.name, "./vocal.wav", sessionClient, session, jaw);
 	console.log("Initialisation resolved!");
 	rec();
 }
