@@ -1,5 +1,5 @@
 const fs = require('fs');
-const exec = require("child_process").execSync;
+const exec = require("child_process").exec;
 const config = require("../config.json");
 
 const languageCode = config.languageCode;
@@ -8,10 +8,11 @@ const play = (filePath, jaw) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
 		jaw.stdin.write("j\n");
-		exec(`aplay ${filePath}`);
-		jaw.stdin.write("s\n");
-		console.log("Play finished");
-		resolve();
+		exec(`aplay ${filePath}`).then(() => {
+			jaw.stdin.write("s\n");
+			console.log("Play finished");
+			resolve();
+		});
 	});
 }
 
