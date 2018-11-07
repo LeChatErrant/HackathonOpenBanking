@@ -7,9 +7,9 @@ const languageCode = config.languageCode;
 const play = (filePath, jaw) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
-		jaw.stdin.write("Speak");
+		jaw.stdin.write("j");
 		exec(`aplay ${filePath}`);
-		jaw.stdin.write("Stop");
+		jaw.stdin.write("s");
 		console.log("Play finished");
 		resolve();
 	});
