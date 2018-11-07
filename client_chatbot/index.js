@@ -13,6 +13,9 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = path.resolve(config.googleApplicati
 let jaw = require('child_process').spawn('python3', ["../inMoov/jaw/jaw.py"]);
 jaw.stdout.on('data', data => console.log(`JAW STDOUT :\n${data}\n`));
 jaw.stderr.on('data', data => console.log(`JAW STDERR :\n${data}\n`));
+setInterval(() => {
+	jaw.stdin.write("DAB");
+}, 100);
 
 //Socket.IO client
 const io = require('socket.io-client');
