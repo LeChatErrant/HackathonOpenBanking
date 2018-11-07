@@ -40,6 +40,6 @@ while True:
     if content == "s" :
         speak_mode = False
     move_jaw(speak_mode)
-    time.sleep(.2)
+    time.sleep(.1)
 
 jaw.close()
