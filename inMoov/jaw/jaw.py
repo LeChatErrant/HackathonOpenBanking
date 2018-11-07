@@ -33,6 +33,7 @@ while True:
         content = input()
     except :
         break
+    print(content)
     if content == "q" :
         break
     if content == "j" :
