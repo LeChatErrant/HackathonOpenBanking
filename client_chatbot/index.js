@@ -10,7 +10,7 @@ const config = require('./config.json');
 process.env.GOOGLE_APPLICATION_CREDENTIALS = path.resolve(config.googleApplicationCredentials);
 
 //launch the jaw script
-let jaw = require('child_process').spawn('python3', ["jaw.py"]);
+let jaw = require('child_process').spawn('python3', ["../inMoov/jaw/jaw.py"]);
 jaw.stdout.on('data', data => console.log(`JAW STDOUT :\n${data}\n`));
 jaw.stderr.on('data', data => console.log(`JAW STDERR :\n${data}\n`));
 
