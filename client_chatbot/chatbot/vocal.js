@@ -86,7 +86,7 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 		timer.reset();
 		console.log(
 			`Intermediate transcript: ${data.recognitionResult.transcript}`
-		);s
+		);
 		if (data.recognitionResult.isFinal === true) {
 			console.log(data);
 			console.log("FINAAAAAL");
