@@ -1,16 +1,29 @@
-const config = require("../config.json");
-const dialogflow = require('dialogflow').v2beta1;
-const fs = require('fs');
-const text = require('./text').text;
-const vocal = require('./vocal').vocal;
+const config;
+const dialogflow;
+const fs;
+const text;
+const vocal;
 
 let toggle = {toggle: true};
 
 //configuration
-const sessionClient = new dialogflow.SessionsClient();
-const projectId = config.projectId;
-const sessionId = "08KLA9wKN9djP3wnS3nd1sv8A1VQVRip";
-const session = sessionClient.sessionPath(projectId, sessionId);
+const sessionClient;
+const projectId;
+const sessionId;
+const session;
+
+exports.init = () => {
+	config = require('../config.json');
+	dialogflow = require('dialogflow').v2beta1;
+	fs = require('fs');
+	text = require('./text').text;
+	vocal = require('./vocal').vocal;
+
+	sessionClient = new dialogflow.sessionClient();
+	projectId = config.projectId;
+	sessionId = "08KLA9wKN9djP3wnS3nd1sv8A1VQVRip";
+	session = sessionClient.sessionPath(projectId, sessionId);
+}
 
 const rec = async (jaw) => {
 	console.log("Starting the reply from the user...");
