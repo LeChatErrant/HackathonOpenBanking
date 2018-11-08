@@ -28,7 +28,8 @@ exports.chatbot = async (socket, jaw, data) => {
 	socket.on('desactivate', () => toggle.toggle = false);
 
 	console.log("Initializing the conversation...");
-	await text("Nom d'utilisateur: " + data.name, "./vocal.wav", sessionClient, session, jaw);
+	await text("loren ipsum ali baba", null, sessionClient, session, jaw);
+	await text(data.name, "./vocal.wav", sessionClient, session, jaw);
 	console.log("Initialisation resolved!");
 	rec(jaw);
 }
