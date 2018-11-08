@@ -2,7 +2,7 @@ const fs = require("fs");
 
 const replaceParameters = (body, parameters) => {
 	let str = body.queryResult.fulfillmentText;
-	Object.keys(parameter).forEach(parameter => {
+	Object.keys(parameters).forEach(parameter => {
 		str.replace("$" + parameter, parameters[parameter]);
 	});
 	return str;
