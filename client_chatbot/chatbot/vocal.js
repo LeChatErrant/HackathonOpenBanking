@@ -84,6 +84,7 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 		timer.start();
 		timer.stopWhen(toggle, "toggle", false);
 	}
+	if (toggle.toggle === false) return;
 	if (data.recognitionResult) {
 		timer.reset();
 		console.log(

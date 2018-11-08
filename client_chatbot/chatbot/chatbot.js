@@ -25,11 +25,17 @@ exports.chatbot = async (socket, jaw, data) => {
 	console.log("InMoov activated! Metadata: \n", data);
 
 	toggle.toggle = true;
-	socket.on('desactivate', () => toggle.toggle = false);
+	socket.on('desactivate', () => {
+		console.log("Received: desactivate");
+		toggle.toggle = false
+	});
 
 	console.log("Initializing the conversation...");
+	if (toggle.toggle === false) return;
 	await text("loren ipsum ali baba", null, sessionClient, session, jaw);
+	if (toggle.toggle === false) return;
 	await text(data.name, "./vocal.wav", sessionClient, session, jaw);
+	if (toggle.toggle === false) return;
 	console.log("Initialisation resolved!");
 	rec(jaw);
 }
