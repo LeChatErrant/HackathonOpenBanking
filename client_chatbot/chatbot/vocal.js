@@ -26,10 +26,12 @@ const play = (filePath, jaw) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
 		jaw.stdin.write("j\n");
-		exec(`aplay ${filePath}`);
-		jaw.stdin.write("s\n");
-		console.log("Play finished");
-		resolve();
+		let child = exec(`aplay ${filePath}`);
+		child.on('exit', () => {
+			jaw.stdin.write("s\n");
+			console.log("Play finished");
+			resolve();
+		});
 	});
 }
 
