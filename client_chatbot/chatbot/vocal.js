@@ -4,7 +4,7 @@ const through2 = require('through2');
 const config = require("../config.json");
 
 const spawn = require('child_process').spawn;
-const exec = require('child_process').execSync;
+const exec = require('child_process').exec;
 
 let prg;
 let timer;
