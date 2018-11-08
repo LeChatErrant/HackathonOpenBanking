@@ -25,11 +25,13 @@ const stop = () => {
 const play = (filePath, jaw) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
-		jaw.stdin.write("j");
-		exec(`aplay ${filePath}`);
-		jaw.stdin.write("s");
-		console.log("Play finished");
-		resolve();
+		jaw.stdin.write("j\n");
+		let child = exec(`aplay ${filePath}`);
+		child.on('exit', () => {
+			jaw.stdin.write("s\n");
+			console.log("Play finished");
+			resolve();
+		});
 	});
 }
 
@@ -86,7 +88,7 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 		timer.reset();
 		console.log(
 			`Intermediate transcript: ${data.recognitionResult.transcript}`
-		);s
+		);
 		if (data.recognitionResult.isFinal === true) {
 			console.log(data);
 			console.log("FINAAAAAL");

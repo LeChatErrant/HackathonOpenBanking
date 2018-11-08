@@ -12,12 +12,12 @@ const projectId = config.projectId;
 const sessionId = "08KLA9wKN9djP3wnS3nd1sv8A1VQVRip";
 const session = sessionClient.sessionPath(projectId, sessionId);
 
-const rec = async () => {
+const rec = async (jaw) => {
 	console.log("Starting the reply from the user...");
 	await vocal("./vocal.wav", toggle, sessionClient, session, jaw);
 	console.log("Reply from the user resolved!");
 	if (toggle.toggle === true) {
-		rec();
+		rec(jaw);
 	}
 }
 
@@ -28,7 +28,8 @@ exports.chatbot = async (socket, jaw, data) => {
 	socket.on('desactivate', () => toggle.toggle = false);
 
 	console.log("Initializing the conversation...");
-	await text("Nom d'utilisateur: " + data.name, "./vocal.wav", sessionClient, session, jaw);
+	await text("loren ipsum ali baba", null, sessionClient, session, jaw);
+	await text(data.name, "./vocal.wav", sessionClient, session, jaw);
 	console.log("Initialisation resolved!");
-	rec();
+	rec(jaw);
 }
