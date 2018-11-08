@@ -2,11 +2,10 @@ const fs = require("fs");
 
 const replaceParameters = (body, parameters) => {
 	let str = body.queryResult.fulfillmentText;
-//	Object.keys(parameters).forEach(parameter => {
-	for (let i = 0 ; i < Object.keys(parameters) ; i++) {
-		str.replace("$" + Object.keys(parameters)[i], parameters[Object.keys(parameters)[i]]);
-	};
-	console.log(str);
+	Object.keys(parameters).forEach(parameter => {
+		console.log("Searching for " + "$" + parameter);
+		str = str.replace("$" + parameter, parameters[parameter]);
+	});
 	return str;
 }
 
