@@ -33,7 +33,7 @@ exports.webhook = (req, res) => {
 	if (action === "input.welcome") {
 		welcomeLogged(body, parameters, response);
 	} else if (action === "replace") {
-		simpleReplace(body, parameters);
+		simpleReplace(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}
