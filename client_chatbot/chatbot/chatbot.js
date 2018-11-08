@@ -1,16 +1,16 @@
-const config;
-const dialogflow;
-const fs;
-const text;
-const vocal;
+let config;
+let dialogflow;
+let fs;
+let text;
+let vocal;
 
 let toggle = {toggle: true};
 
 //configuration
-const sessionClient;
-const projectId;
-const sessionId;
-const session;
+let sessionClient;
+let projectId;
+let sessionId;
+let session;
 
 exports.init = () => {
 	config = require('../config.json');
