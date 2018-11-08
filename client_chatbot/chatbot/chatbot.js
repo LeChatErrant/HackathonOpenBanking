@@ -1,28 +1,21 @@
-let config;
-let dialogflow;
-let fs;
-let text;
-let vocal;
+const config = require("../config.json");
+const dialogflow = require('dialogflow').v2beta1;
+const fs = require('fs');
+const text = require('./text').text;
+const vocal = require('./vocal').vocal;
 
 let toggle = {toggle: true};
 
 //configuration
-let sessionClient;
-let projectId;
-let sessionId;
-let session;
+const sessionClient = new dialogflow.SessionsClient();
+const projectId = config.projectId;
+const sessionId = "08KLA9wKN9djP3wnS3nd1sv8A1VQVRip";
+const session = sessionClient.sessionPath(projectId, sessionId);
 
 exports.init = () => {
-	config = require('../config.json');
-	dialogflow = require('dialogflow').v2beta1;
-	fs = require('fs');
-	text = require('./text').text;
-	vocal = require('./vocal').vocal;
-
-	sessionClient = new dialogflow.sessionClient();
-	projectId = config.projectId;
-	sessionId = "08KLA9wKN9djP3wnS3nd1sv8A1VQVRip";
-	session = sessionClient.sessionPath(projectId, sessionId);
+	//This function litterally does nothing
+	//It exists only for optimizations purpose
+	//It makes scripts load before the first chatbot activation
 }
 
 const rec = async (jaw) => {
