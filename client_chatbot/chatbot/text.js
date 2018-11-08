@@ -26,11 +26,14 @@ exports.text = (input, filePath, sessionClient, session, jaw) => {
 					text: input,
 					languageCode: languageCode,
 				},
-			},
-			outputAudioConfig: {
-				audioEncoding: `OUTPUT_AUDIO_ENCODING_LINEAR_16`,
 			}
 		};
+
+		if (filePath !== null) {
+			request.outputAudioConfig = {
+				audioEncoding: `OUTPUT_AUDIO_ENCODING_LINEAR_16`,
+			}
+		}
 
 		sessionClient
 		.detectIntent(request)
@@ -45,9 +48,13 @@ exports.text = (input, filePath, sessionClient, session, jaw) => {
 			console.log("Result:");
 			console.log(result.fulfillmentText);
 			console.log("\n");
-			fs.writeFileSync(filePath, responses[0].outputAudio);
-			await play(filePath, jaw);
-			resolve();
+			if (filePath !== null) {
+				fs.writeFileSync(filePath, responses[0].outputAudio);
+				await play(filePath, jaw);
+				resolve();
+			} else {
+				resolve();
+			}
 		})
 		.catch(err => {
 			console.error('\nERROR:\n', err, '\n');
