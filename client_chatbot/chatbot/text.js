@@ -9,7 +9,7 @@ const play = (filePath, jaw) => {
 		console.log("Play started");
 		jaw.stdin.write("j\n");
 		let child = exec(`aplay ${filePath}`);
-		child.on('exit', () => {
+		child.prependListener('exit', () => {
 			jaw.stdin.write("s\n");
 			console.log("Play finished");
 			resolve();
