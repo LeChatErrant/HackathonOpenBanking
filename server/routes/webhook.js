@@ -15,7 +15,7 @@ exports.webhook = (req, res) => {
 //	console.log("BODY: ", body);
 	const action = body.queryResult.action;
 	console.log("ACTION: ", action);
-	const parameters = {...body.queryResult.parameters, ...body.outputContexts[0].parameters.name};
+	const parameters = {...body.queryResult.parameters, ...body.queryResult.outputContexts[0].parameters.name};
 	console.log("PARAMETERS: ", parameters);
 	let response = {};
 
