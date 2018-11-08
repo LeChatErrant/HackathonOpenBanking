@@ -19,7 +19,7 @@ setInterval(() => {
 
 //Socket.IO client
 const io = require('socket.io-client');
-const chatbot = require("./chatbot/chatbot").socket;
+const chatbot = require("./chatbot/chatbot").chatbot;
 var socket = io.connect(config.serverURL, {reconnect: true});
 socket.on('connect', () => console.log("Connected!"));
 socket.on('activate', data => chatbot(socket, jaw, data));
