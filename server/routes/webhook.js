@@ -13,6 +13,10 @@ const welcomeLogged = (body, parameters, response) => {
 	response.fulfillmentText = replaceParameters(body, parameters);
 }
 
+const simpleReplace = (body, parameters, response) => {
+	response.fulfillmentText = replaceParameters(body, parameters);
+}
+
 const unrecognizedAction = (response) => {
 	response.fulfillmentText = "Error : Unrecognized action";
 }
@@ -28,6 +32,8 @@ exports.webhook = (req, res) => {
 
 	if (action === "input.welcome") {
 		welcomeLogged(body, parameters, response);
+	} else if (action === "replace") {
+		simpleReplace(body, parameters);
 	} else {
 		unrecognizedAction(response);
 	}
