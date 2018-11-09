@@ -23,25 +23,21 @@ audio = wf.readframes(CHUNK)
 
 maxPeak = 0;
 
-print('------start process------')
 while audio != b'':
     peak=np.average(np.abs(np.fromstring(audio,dtype=np.int16)))/100
     if peak > maxPeak:
         maxPeak = peak
     audio = wf.readframes(CHUNK)
-print(int(maxPeak), '= 100%')
-print('--------end--------')
 
 wf.rewind()
 audio = wf.readframes(CHUNK)
 
-print('------start lip sync-------')
 while  audio != b'':
     stream.write(audio)
     peak = np.average(np.abs(np.fromstring(audio,dtype=np.int16)))
-    print(int(peak/maxPeak), '%')
+    print(int(peak/maxPeak))
+    sys.stdout.flush()
     audio = wf.readframes(CHUNK)
-print('------------end------------')
 stream.stop_stream()
 stream.close()
 p.terminate()
