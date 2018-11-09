@@ -4,7 +4,7 @@ from inMoov import InMoov
 from track import Tracking
 
 start = 0
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(2)
 
 inMoov = InMoov(25, 20)
 track = Tracking()
@@ -13,7 +13,7 @@ while True :
     ret, frame = cam.read()
     track.tracker(frame)
 
-    inMoov.animateHead(track.tracked_object)
+    inMoov.animateHead(track)
     if (keyboard.is_pressed("m")) :
         cv2.waitKey(5)
         map = True if map == False else False
