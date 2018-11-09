@@ -1,9 +1,20 @@
 const fs = require("fs");
 
-const welcomeLogged = (body, response) => {
-	console.log(body);
-	fs.writeFileSync("./test.json", body);
-	response.fulfillmentText = "Nickel, ca marche bien!";
+const replaceParameters = (body, parameters) => {
+	let str = body.queryResult.fulfillmentText;
+	Object.keys(parameters).forEach(parameter => {
+		console.log("Searching for " + "$" + parameter);
+		str = str.replace("$" + parameter, parameters[parameter]);
+	});
+	return str;
+}
+
+const welcomeLogged = (body, parameters, response) => {
+	response.fulfillmentText = replaceParameters(body, parameters);
+}
+
+const simpleReplace = (body, parameters, response) => {
+	response.fulfillmentText = replaceParameters(body, parameters);
 }
 
 const unrecognizedAction = (response) => {
@@ -20,7 +31,9 @@ exports.webhook = (req, res) => {
 	let response = {};
 
 	if (action === "input.welcome") {
-		welcomeLogged(body, response);
+		welcomeLogged(body, parameters, response);
+	} else if (action === "replace") {
+		simpleReplace(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}

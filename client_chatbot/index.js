@@ -19,9 +19,12 @@ setInterval(() => {
 
 //Socket.IO client
 const io = require('socket.io-client');
+const chatbot = require('./chatbot/chatbot');
+chatbot.init();
+const launch = chatbot.chatbot;
 var socket = io.connect(config.serverURL, {reconnect: true});
 socket.on('connect', () => console.log("Connected!"));
-socket.on('activate', data => require('./chatbot/chatbot').chatbot(socket, jaw, data));
+socket.on('activate', data => launch(socket, jaw, data));
 
 //creating record dir
 if (!fs.existsSync(config.recordDir)) {
