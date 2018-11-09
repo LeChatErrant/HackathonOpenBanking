@@ -13,8 +13,7 @@ const getDb = (table) => {
 	});
 }
 
-
-const rendezvous = (body, parameter, response) => {
+const rendezvous = async (body, parameter, response) => {
 	const db = await getDb("/conseillers/");
 	console.log("DB\n", db);
 	const conseiller = db[parameter.conseiller];
@@ -55,6 +54,8 @@ exports.webhook = (req, res) => {
 		welcomeLogged(body, parameters, response);
 	} else if (action === "replace") {
 		simpleReplace(body, parameters, response);
+	} else if (action === "rendezvous") {
+		rendezvous(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}
