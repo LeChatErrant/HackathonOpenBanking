@@ -18,9 +18,10 @@ class InMoov :
         
         self.head.write("z0,\n".encode())
 
-    def animateHead(self, tracker) :
-        self.neck.neckLimSensor(tracker)
-        self.neck.animateNeck(self.head)
+    def animateHead(self, track) :
+        if track.is_present :
+            self.neck.neckLimSensor(track.tracked_object)
+            self.neck.animateNeck(self.head)
 
     def turn_eyes(self) :
         print(self.currentEyeDegreeY)

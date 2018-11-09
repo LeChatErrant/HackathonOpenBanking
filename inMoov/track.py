@@ -22,7 +22,7 @@ class Tracking :
                 self.is_present = True
                 self.start += 1
                 mod = 1
-            elif (tmp_ref[0] > self.tracked_object[0] - 40 and tmp_ref[0] < self.tracked_object[0] + 40 and tmp_ref[1] > self.tracked_object[1] - 40 and tmp_ref[1] < self.tracked_object[1] + 40) :
+            elif (len(face) == 1) or (tmp_ref[0] > self.tracked_object[0] - 60 and tmp_ref[0] < self.tracked_object[0] + 60 and tmp_ref[1] > self.tracked_object[1] - 60 and tmp_ref[1] < self.tracked_object[1] + 60) :
                 self.tracked_object = tmp_ref
                 self.is_present = True
                 mod = 1
@@ -38,7 +38,7 @@ class Tracking :
                 self.tracked_object = tmp_ref
                 self.is_present = True
                 self.start += 1
-            elif (tmp_ref[0] > self.tracked_object[0] - 40 and tmp_ref[0] < self.tracked_object[0] + 40 and tmp_ref[1] > self.tracked_object[1] - 40 and tmp_ref[1] < self.tracked_object[1] + 40) :
+            elif (len(face) == 1) or (tmp_ref[0] > self.tracked_object[0] - 40 and tmp_ref[0] < self.tracked_object[0] + 40 and tmp_ref[1] > self.tracked_object[1] - 40 and tmp_ref[1] < self.tracked_object[1] + 40) :
                 self.tracked_object = tmp_ref
                 self.is_present = True
                 break
