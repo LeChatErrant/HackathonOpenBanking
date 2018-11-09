@@ -40,7 +40,8 @@ while True:
         content = input()
     except :
         break
-    print(content)
+    if (content != "DAB") :
+        print(content)
     if content == "q" :
         break
     if content == "j" :
