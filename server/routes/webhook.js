@@ -49,7 +49,7 @@ const unrecognizedAction = (response) => {
 	response.fulfillmentText = "Error : Unrecognized action";
 }
 
-exports.webhook = (req, res) => {
+exports.webhook = async (req, res) => {
 	const body = req.body;
 //	console.log("BODY: ", body);
 	const action = body.queryResult.action;
@@ -63,7 +63,7 @@ exports.webhook = (req, res) => {
 	} else if (action === "replace") {
 		simpleReplace(body, parameters, response);
 	} else if (action === "rendezvous") {
-		rendezvous(body, parameters, response);
+		await rendezvous(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}
