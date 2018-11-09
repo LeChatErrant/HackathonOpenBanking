@@ -18,14 +18,17 @@ const updateDb = (table, data) => {
 	ref.update(data);
 };
 
-const rendezvous = async (body, parameter, response) => {
-	const db = await getDb("/conseillers/");
-	const conseiller = db[parameter.conseiller];
-	if (conseiller.state === 'disponible') {
-		response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
-	} else {
-		response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
-	}
+const rendezvous = (body, parameter, response) => {
+	return new Promise(async (resolve, reject) => {
+		const db = await getDb("/conseillers/");
+		const conseiller = db[parameter.conseiller];
+		if (conseiller.state === 'disponible') {
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+		} else {
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+		}
+		resolve();
+	});
 }
 
 const replaceParameters = (body, parameters) => {
@@ -51,7 +54,7 @@ const unrecognizedAction = (response) => {
 
 exports.webhook = async (req, res) => {
 	const body = req.body;
-//	console.log("BODY: ", body);
+	//	console.log("BODY: ", body);
 	const action = body.queryResult.action;
 	console.log("ACTION: ", action);
 	const parameters = {...body.queryResult.parameters, ...body.queryResult.outputContexts[0].parameters};
