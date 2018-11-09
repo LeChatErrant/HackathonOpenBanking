@@ -13,11 +13,19 @@ const getDb = (table) => {
 	});
 }
 
+const updateDb = (table, data) => {
+	let ref = firebase.database().ref().child(table);
+	ref.update(data);
+};
+
 const rendezvous = async (body, parameter, response) => {
 	const db = await getDb("/conseillers/");
-	console.log("DB\n", db);
 	const conseiller = db[parameter.conseiller];
-	console.log("CONSEILLER\n", conseiller);
+	if (conseiller.state === 'disponible') {
+		response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+	} else {
+		response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+	}
 }
 
 const replaceParameters = (body, parameters) => {
