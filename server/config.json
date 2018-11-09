@@ -2,5 +2,13 @@
 	"port": 8000,
 	"certPath": "./ssl/fullchain.pem",
 	"keyPath": "./ssl/privkey.pem",
-	"cookieSeed": "the keyboard cat"
+	"cookieSeed": "the keyboard cat",
+	"db": {
+		"apiKey": "AIzaSyCsbnXi94iY2b2m7EnvVGPM3uyPHVexum8",
+		"authDomain": "home-by-lechaterrant.firebaseapp.com",
+		"databaseURL": "https://home-by-lechaterrant.firebaseio.com",
+		"projectId": "home-by-lechaterrant",
+		"storageBucket": "home-by-lechaterrant.appspot.com",
+		"messagingSenderId": "504310237780"
+	}
 }

@@ -1,4 +1,32 @@
 const fs = require("fs");
+const firebase = require('firebase');
+const config = require('../config.json');
+
+firebase.initializeApp(config.db);
+
+const getDb = (table) => {
+	return new Promise((resolve, reject) => {
+		firebase.database().ref(table).once('value').then(function(snapshot) {
+			const db = snapshot.val();
+			resolve(db);
+		});
+	});
+}
+
+const updateDb = (table, data) => {
+	let ref = firebase.database().ref().child(table);
+	ref.update(data);
+};
+
+const rendezvous = async (body, parameter, response) => {
+	const db = await getDb("/conseillers/");
+	const conseiller = db[parameter.conseiller];
+	if (conseiller.state === 'disponible') {
+		response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+	} else {
+		response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+	}
+}
 
 const replaceParameters = (body, parameters) => {
 	let str = body.queryResult.fulfillmentText;
@@ -34,6 +62,8 @@ exports.webhook = (req, res) => {
 		welcomeLogged(body, parameters, response);
 	} else if (action === "replace") {
 		simpleReplace(body, parameters, response);
+	} else if (action === "rendezvous") {
+		rendezvous(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}
