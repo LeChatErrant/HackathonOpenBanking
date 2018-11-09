@@ -1,4 +1,25 @@
 const fs = require("fs");
+const firebase = require('firebase');
+const config = require('../config.json');
+
+firebase.initializeApp(config.db);
+
+const getDb = (table) => {
+	return new Promise((resolve, reject) => {
+		firebase.database().ref(table).once('value').then(function(snapshot) {
+			const db = snapshot.val();
+			resolve(db);
+		});
+	});
+}
+
+
+const rendezvous = (body, parameter, response) => {
+	const db = await getDb("/conseillers/");
+	console.log("DB\n", db);
+	const conseiller = db[parameter.conseiller];
+	console.log("CONSEILLER\n", conseiller);
+}
 
 const replaceParameters = (body, parameters) => {
 	let str = body.queryResult.fulfillmentText;
