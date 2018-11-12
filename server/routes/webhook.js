@@ -88,7 +88,11 @@ exports.webhook = async (req, res) => {
 	console.log("BODY: ", body);
 	const action = body.queryResult.action;
 	console.log("ACTION: ", action);
-	const parameters = {...body.queryResult.parameters, ...body.queryResult.outputContexts[0].parameters};
+	let parameters = {...body.queryResult.parameters}
+	body.queryResult.outputContexts.forEach(x => {
+		parameters = {...parameters, ...x.parameters};
+	});
+
 	console.log("PARAMETERS: ", parameters);
 	let response = {};
 
