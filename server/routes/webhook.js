@@ -31,6 +31,8 @@ const dispo = (body, parameter, response) => {
 			if (last !== "dispo") {
 				response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
 				last = "dispo";
+			} else {
+				response.fulfillmentText = " "
 			}
 
 			agenda.forEach(x => {
