@@ -25,7 +25,7 @@ const dispo = (body, parameter, response) => {
 		if (!agenda) {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
 		} else {
-			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
 
 			agenda.forEach(x => {
 				response.fulfillmentText += ` - Le ${x.data} à ${x.hour}.\n`;
@@ -45,8 +45,9 @@ const rendezvous = (body, parameter, response) => {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
 		} else {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+			response.outputContexts = body.queryResult.outputContexts;
+			response.outputContexts[1].lifespanCount = 0;
 		}
-		response.outputContexts = body.queryResult.outputContexts;
 		resolve();
 	});
 }
