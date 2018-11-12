@@ -33,7 +33,7 @@ const rendezvous = (body, parameter, response) => {
 				response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
 			}
 			response.outputContexts = body.queryResult.outputContexts;
-			response.outputContexts[1].lifespanCount = 0;
+			response.outputContexts[0].lifespanCount = 0;
 		}
 		resolve();
 	});
