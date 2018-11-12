@@ -24,6 +24,8 @@ const dispo = (body, parameter, response) => {
 		const agenda = cache.calendar;
 		if (!agenda) {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+			response.outputContexts = body.queryResult.outputContexts;
+			response.outputContexts[0].lifespanCount = 0;
 		} else {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
 
@@ -31,8 +33,6 @@ const dispo = (body, parameter, response) => {
 				response.fulfillmentText += ` - Le ${x.date} à ${x.hour}.\n`;
 			});
 			response.fulfillmentText += "Souhaitez-vous que je répète?";
-			response.outputContexts = body.queryResult.outputContexts;
-			response.outputContexts[0].lifespanCount = 0;
 		}
 		response.fulfillmentText = strParameters(response.fulfillmentText, parameter);
 		resolve();
