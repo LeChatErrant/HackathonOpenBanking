@@ -3,6 +3,7 @@ const firebase = require('firebase');
 const config = require('../config.json');
 
 firebase.initializeApp(config.db);
+let cache;
 
 const getDb = (table) => {
 	return new Promise((resolve, reject) => {
@@ -18,11 +19,28 @@ const updateDb = (table, data) => {
 	ref.update(data);
 };
 
+const dispo = (body, parameter, response) => {
+	return new Promise(async(resolve, reject) => {
+		const agenda = cache.calendar;
+		if (!agenda) {
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+		} else {
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+
+			agenda.forEach(x => {
+				response.fulfillmentText += ` - Le ${x.data} à ${x.hour}.\n`;
+			});
+		}
+		response.fulfillmentText = strParameters(response.fulfillmentText, parameter);
+		resolve();
+	});
+}
+
 const rendezvous = (body, parameter, response) => {
 	return new Promise(async (resolve, reject) => {
-		console.log("Param detected");
 		const db = await getDb("/conseillers/");
 		const conseiller = db[parameter.conseiller];
+		cache = conseiller;
 		if (conseiller.state === 'disponible') {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
 		} else {
@@ -31,6 +49,14 @@ const rendezvous = (body, parameter, response) => {
 		response.outputContexts = body.queryResult.outputContexts;
 		resolve();
 	});
+}
+
+const strParameters = (str, parameters) => {
+	Object.keys(parameters).forEach(parameter => {
+		console.log("Searching for " + "$" + parameter);
+		str = str.replace("$" + parameter, parameters[parameter]);
+	});
+	return str;
 }
 
 const replaceParameters = (body, parameters) => {
@@ -69,6 +95,8 @@ exports.webhook = async (req, res) => {
 		simpleReplace(body, parameters, response);
 	} else if (action === "rendezvous") {
 		await rendezvous(body, parameters, response);
+	} else if (action === "disponibilités") {
+		await dispo(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}
