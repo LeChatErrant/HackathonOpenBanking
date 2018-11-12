@@ -27,7 +27,7 @@ const dispo = (body, parameter, response) => {
 			response.outputContexts = body.queryResult.outputContexts;
 			response.outputContexts[0].lifespanCount = 0;
 		} else {
-			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0] + "\n";
 			agenda.forEach(x => {
 				response.fulfillmentText += ` - Le ${x.date} à ${x.hour}.\n`;
 			});
