@@ -30,6 +30,9 @@ const dispo = (body, parameter, response) => {
 			agenda.forEach(x => {
 				response.fulfillmentText += ` - Le ${x.date} à ${x.hour}.\n`;
 			});
+			response.fulfillmentText += "Souhaitez-vous que je répète?";
+			response.outputContexts = body.queryResult.outputContexts;
+			response.outputContexts[0].lifespanCount = 0;
 		}
 		response.fulfillmentText = strParameters(response.fulfillmentText, parameter);
 		resolve();
