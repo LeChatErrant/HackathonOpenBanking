@@ -24,7 +24,7 @@ while True:
     maxPeak = 0;
 
     while audio != b'':
-        peak=np.average(np.abs(np.fromstring(audio,dtype=np.int16)))/100
+        peak = np.average(np.abs(np.fromstring(audio,dtype=np.int16)))/100
         if peak > maxPeak:
             maxPeak = peak
         audio = wf.readframes(CHUNK)
