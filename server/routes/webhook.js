@@ -21,8 +21,10 @@ const updateDb = (table, data) => {
 const rendezvous = (body, parameter, response) => {
 	return new Promise(async (resolve, reject) => {
 		if (parameter.conseiller === '') {
-			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+			console.log("Param not detected");
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[2].text.text[0];
 		} else {
+			console.log("Param detected");
 			const db = await getDb("/conseillers/");
 			const conseiller = db[parameter.conseiller];
 			if (conseiller.state === 'disponible') {
@@ -30,6 +32,8 @@ const rendezvous = (body, parameter, response) => {
 			} else {
 				response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
 			}
+			response.outputContexts = body.queryResult.outputContexts;
+			response.outputContexts[1].lifespanCount = 0;
 		}
 		resolve();
 	});
