@@ -4,6 +4,7 @@ const config = require('../config.json');
 
 firebase.initializeApp(config.db);
 let cache;
+let last;
 
 const getDb = (table) => {
 	return new Promise((resolve, reject) => {
@@ -27,7 +28,10 @@ const dispo = (body, parameter, response) => {
 			response.outputContexts = body.queryResult.outputContexts;
 			response.outputContexts[0].lifespanCount = 0;
 		} else {
-			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+			if (last !== "dispo") {
+				response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+				last = "dispo";
+			}
 
 			agenda.forEach(x => {
 				response.fulfillmentText += ` - Le ${x.date} à ${x.hour}.\n`;
@@ -99,6 +103,8 @@ exports.webhook = async (req, res) => {
 		simpleReplace(body, parameters, response);
 	} else if (action === "rendezvous") {
 		await rendezvous(body, parameters, response);
+	} else if (action === "resetLast") {
+		last = "none";
 	} else if (action === "disponibilités") {
 		await dispo(body, parameters, response);
 	} else {
