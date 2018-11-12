@@ -15,13 +15,13 @@ currentJawPos = 45
 
 def move_jaw(val) :
     global currentJawPos
-    update_pos = int(val * 110 / 100)
+    update_pos = int(val * 95 / 100)
     diff = update_pos - currentJawPos
     currentJawPos = currentJawPos + diff
 
     if not unplug :
         str_diff = "j" + str(diff) + ",\n"
-        print(str_diff)
+        #print(str_diff)
         jaw.write(str_diff.encode())
 
 for val in sys.__stdin__ :

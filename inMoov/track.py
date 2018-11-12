@@ -7,6 +7,7 @@ class Tracking :
         self.profil_cascade = cv2.CascadeClassifier('cascade_classifier/lbpcascade_profileface.xml')
         self.start = 0
         self.is_present = False
+        self.clock = 0
 
     def tracker(self, frame) :
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -16,29 +17,8 @@ class Tracking :
         
         for (x, y, w, h) in face :
             tmp_ref = [int(x + ((x + w) - x) / 2), int(y + ((y + h) - y) / 2)]
-            cv2.circle(frame, (tmp_ref[0], tmp_ref[1]), 4, (255, 0, 0), 2)    
-            if self.start == 0 :
-                self.tracked_object = tmp_ref
-                self.is_present = True
-                self.start += 1
-                mod = 1
-            elif (len(face) == 1) or (tmp_ref[0] > self.tracked_object[0] - 60 and tmp_ref[0] < self.tracked_object[0] + 60 and tmp_ref[1] > self.tracked_object[1] - 60 and tmp_ref[1] < self.tracked_object[1] + 60) :
-                self.tracked_object = tmp_ref
-                self.is_present = True
-                mod = 1
-                break
-        
-        if mod != 0 :
-            return
-        profil = self.profil_cascade.detectMultiScale(gray, 1.3, 7)
-        for (x, y, w, h) in profil :
-            tmp_ref = [int(x + ((x + w) - x) / 2), int(y + ((y + h) - y) / 2)]
-            cv2.circle(frame, (tmp_ref[0], tmp_ref[1]), 4, (255, 0, 0), 2)    
-            if self.start == 0 :
-                self.tracked_object = tmp_ref
-                self.is_present = True
-                self.start += 1
-            elif (len(face) == 1) or (tmp_ref[0] > self.tracked_object[0] - 40 and tmp_ref[0] < self.tracked_object[0] + 40 and tmp_ref[1] > self.tracked_object[1] - 40 and tmp_ref[1] < self.tracked_object[1] + 40) :
-                self.tracked_object = tmp_ref
-                self.is_present = True
-                break
+            cv2.circle(frame, (tmp_ref[0], tmp_ref[1]), 4, (255, 0, 0), 2)
+            self.tracked_object = tmp_ref
+            self.is_present = True
+            self.start += 1
+            

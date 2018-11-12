@@ -5,9 +5,9 @@ class Neck :
         winW = 640
         winH = 480
         self.neckVector = [0, 0]
-        self.neckLimLeft = [0, int(percent_of(neck_coef, winW))]
+        self.neckLimLeft = [0, int(percent_of(neck_coef, winW)) + 70]
         self.neckLimRight = [int(percent_of((100 - neck_coef * 2) + neck_coef, winW)), winW]
-        self.neckLimTop = [0, int(percent_of(neck_coef, winH))]
+        self.neckLimTop = [0, int(percent_of(neck_coef, winH)) + 70]
         self.neckLimBot = [int(percent_of((100 - neck_coef * 2) + neck_coef, winH)), winH]
         self.currentHeadDegreeX = 90
         self.currentHeadDegreeY = 90
