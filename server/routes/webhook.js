@@ -18,14 +18,19 @@ const updateDb = (table, data) => {
 	ref.update(data);
 };
 
-const rendezvous = async (body, parameter, response) => {
-	const db = await getDb("/conseillers/");
-	const conseiller = db[parameter.conseiller];
-	if (conseiller.state === 'disponible') {
-		response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
-	} else {
-		response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
-	}
+const rendezvous = (body, parameter, response) => {
+	return new Promise(async (resolve, reject) => {
+		console.log("Param detected");
+		const db = await getDb("/conseillers/");
+		const conseiller = db[parameter.conseiller];
+		if (conseiller.state === 'disponible') {
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+		} else {
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+		}
+		response.outputContexts = body.queryResult.outputContexts;
+		resolve();
+	});
 }
 
 const replaceParameters = (body, parameters) => {
@@ -49,9 +54,9 @@ const unrecognizedAction = (response) => {
 	response.fulfillmentText = "Error : Unrecognized action";
 }
 
-exports.webhook = (req, res) => {
+exports.webhook = async (req, res) => {
 	const body = req.body;
-//	console.log("BODY: ", body);
+	console.log("BODY: ", body);
 	const action = body.queryResult.action;
 	console.log("ACTION: ", action);
 	const parameters = {...body.queryResult.parameters, ...body.queryResult.outputContexts[0].parameters};
@@ -63,7 +68,7 @@ exports.webhook = (req, res) => {
 	} else if (action === "replace") {
 		simpleReplace(body, parameters, response);
 	} else if (action === "rendezvous") {
-		rendezvous(body, parameters, response);
+		await rendezvous(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}

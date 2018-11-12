@@ -1,7 +1,7 @@
 {
 	"port": 8000,
-	"certPath": "./ssl/fullchain.pem",
-	"keyPath": "./ssl/privkey.pem",
+	"certPath": "./ssl/cert.pem",
+	"keyPath": "./ssl/key.pem",
 	"cookieSeed": "the keyboard cat",
 	"db": {
 		"apiKey": "AIzaSyCsbnXi94iY2b2m7EnvVGPM3uyPHVexum8",
