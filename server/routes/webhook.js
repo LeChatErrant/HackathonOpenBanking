@@ -28,7 +28,7 @@ const dispo = (body, parameter, response) => {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
 
 			agenda.forEach(x => {
-				response.fulfillmentText += ` - Le ${x.data} à ${x.hour}.\n`;
+				response.fulfillmentText += ` - Le ${x.date} à ${x.hour}.\n`;
 			});
 		}
 		response.fulfillmentText = strParameters(response.fulfillmentText, parameter);
