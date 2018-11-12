@@ -4,6 +4,7 @@ const config = require('../config.json');
 
 firebase.initializeApp(config.db);
 let cache;
+let last;
 
 const getDb = (table) => {
 	return new Promise((resolve, reject) => {
@@ -24,15 +25,20 @@ const dispo = (body, parameter, response) => {
 		const agenda = cache.calendar;
 		if (!agenda) {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+			response.outputContexts = body.queryResult.outputContexts;
+			response.outputContexts[0].lifespanCount = 0;
 		} else {
-			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+			if (last !== "dispo") {
+				response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+				last = "dispo";
+			} else {
+				response.fulfillmentText = " "
+			}
 
 			agenda.forEach(x => {
 				response.fulfillmentText += ` - Le ${x.date} à ${x.hour}.\n`;
 			});
 			response.fulfillmentText += "Souhaitez-vous que je répète?";
-			response.outputContexts = body.queryResult.outputContexts;
-			response.outputContexts[0].lifespanCount = 0;
 		}
 		response.fulfillmentText = strParameters(response.fulfillmentText, parameter);
 		resolve();
@@ -99,6 +105,8 @@ exports.webhook = async (req, res) => {
 		simpleReplace(body, parameters, response);
 	} else if (action === "rendezvous") {
 		await rendezvous(body, parameters, response);
+	} else if (action === "resetLast") {
+		last = "none";
 	} else if (action === "disponibilités") {
 		await dispo(body, parameters, response);
 	} else {
