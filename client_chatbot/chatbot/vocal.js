@@ -22,11 +22,11 @@ const stop = () => {
 	prg.kill();
 }
 
-const play = (filePath, jaw) => {
+const play = (filePath, jaw, jawController) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
 		jaw.stdin.write(path.resolve(filePath) + "\n");
-		jaw.stdout.once(data => {
+		jawController.stdout.once(data => {
 			console.log("Play finished");
 			resolve();
 		});
@@ -85,7 +85,7 @@ class Timer {
 }
 
 
-const handleData = async (data, filePath, resolve, toggle, jaw) => {
+const handleData = async (data, filePath, resolve, toggle, jaw, jawController) => {
 	if (!timer) {
 		timer = new Timer(2000, stop);
 		timer.start();
@@ -118,14 +118,14 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 			console.log("\n");
 		} else {
 			fs.writeFileSync(filePath, data.outputAudio);
-			await play(filePath, jaw);
+			await play(filePath, jaw, jawController);
 			timer = undefined;
 			resolve();
 		}
 	}
 }
 
-exports.vocal = (filePath, toggle, sessionClient, session, jaw) => {
+exports.vocal = (filePath, toggle, sessionClient, session, jaw, jawController) => {
 	return new Promise(async (resolve, reject) => {
 		const initialStreamRequest = {
 			session: session,
@@ -147,7 +147,7 @@ exports.vocal = (filePath, toggle, sessionClient, session, jaw) => {
 		const detectStream = sessionClient
 		.streamingDetectIntent()
 		.on('error', console.error)
-		.on('data', data => handleData(data, filePath, resolve, toggle, jaw));
+		.on('data', data => handleData(data, filePath, resolve, toggle, jaw, jawController));
 
 		// Write the initial stream request to config for audio input.
 		detectStream.write(initialStreamRequest);
