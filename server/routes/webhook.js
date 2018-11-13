@@ -1,5 +1,3 @@
-import { resolveAny } from "dns";
-
 const fs = require("fs");
 const firebase = require('firebase');
 const config = require('../config.json');
