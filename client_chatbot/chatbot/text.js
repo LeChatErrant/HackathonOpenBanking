@@ -1,5 +1,6 @@
 const fs = require('fs');
 const exec = require("child_process").exec;
+const path = require("path");
 const config = require("../config.json");
 
 const languageCode = config.languageCode;
@@ -7,6 +8,12 @@ const languageCode = config.languageCode;
 const play = (filePath, jaw) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
+		jaw.stdin.write(path.resolve(filePath) + "\n");
+		jaw.stdout.once(data => {
+			console.log("Play finished");
+			resolve();
+		});
+		/*
 		jaw.stdin.write("j\n");
 		let child = exec(`aplay ${filePath}`);
 		child.prependListener('exit', () => {
@@ -14,6 +21,7 @@ const play = (filePath, jaw) => {
 			console.log("Play finished");
 			resolve();
 		});
+		*/
 	});
 }
 

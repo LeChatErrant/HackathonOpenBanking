@@ -25,13 +25,20 @@ const stop = () => {
 const play = (filePath, jaw) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
+		jaw.stdin.write(path.resolve(filePath) + "\n");
+		jaw.stdout.once(data => {
+			console.log("Play finished");
+			resolve();
+		});
+		/*
 		jaw.stdin.write("j\n");
 		let child = exec(`aplay ${filePath}`);
-		child.on('exit', () => {
+		child.prependListener('exit', () => {
 			jaw.stdin.write("s\n");
 			console.log("Play finished");
 			resolve();
 		});
+		*/
 	});
 }
 
