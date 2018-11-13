@@ -121,7 +121,7 @@ exports.webhook = async (req, res) => {
 	} else if (action === "disponibilités") {
 		await dispo(body, parameters, response);
 	} else if (action === "reservation") {
-		await resolveAny(body, parameters, response);
+		await resa(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}
