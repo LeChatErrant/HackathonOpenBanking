@@ -18,6 +18,13 @@ while True:
                         channels=wf.getnchannels(),
                         rate=wf.getframerate(),
                         output=True, input=False)
+    else:
+        stream.stop_stream()
+        stream.close()
+        stream=p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                        channels=wf.getnchannels(),
+                        rate=wf.getframerate(),
+                        output=True, input=False)
 
     audio = wf.readframes(CHUNK)
 
