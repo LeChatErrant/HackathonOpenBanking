@@ -1,6 +1,7 @@
 const fs = require("fs");
 const pump = require('pump');
 const through2 = require('through2');
+const path = require('path');
 const config = require("../config.json");
 
 const spawn = require('child_process').spawn;
