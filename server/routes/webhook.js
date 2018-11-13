@@ -1,3 +1,5 @@
+import { resolveAny } from "dns";
+
 const fs = require("fs");
 const firebase = require('firebase');
 const config = require('../config.json');
@@ -17,7 +19,16 @@ const getDb = (table) => {
 const updateDb = (table, data) => {
 	let ref = firebase.database().ref().child(table);
 	ref.update(data);
+
 };
+
+const resa = (body, parameter, response) => {
+	const agenda = cache.calendar;
+
+	const date = parameter.day + "/" + monthRef.indexOf(parameter.month).toString() + "/2018";
+	console.log("Date asked: " + date);
+
+}
 
 const monthRef = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"];
 
@@ -109,6 +120,8 @@ exports.webhook = async (req, res) => {
 		await rendezvous(body, parameters, response);
 	} else if (action === "disponibilités") {
 		await dispo(body, parameters, response);
+	} else if (action === "reservation") {
+		await resolveAny(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}
