@@ -38,6 +38,7 @@ while True:
         print(int(peak/maxPeak))
         sys.stdout.flush()
         audio = wf.readframes(CHUNK)
+    print("DONE")
 
 stream.stop_stream()
 stream.close()

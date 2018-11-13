@@ -25,7 +25,10 @@ def move_jaw(val) :
         jaw.write(str_diff.encode())
 
 for val in sys.__stdin__ :
-    move_jaw(int(val))
+    if (val == "DONE")
+        print("Done")
+    else:
+        move_jaw(int(val))
 
 
 jaw.close()
