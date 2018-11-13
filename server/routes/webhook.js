@@ -17,7 +17,20 @@ const getDb = (table) => {
 const updateDb = (table, data) => {
 	let ref = firebase.database().ref().child(table);
 	ref.update(data);
+
 };
+
+const resa = (body, parameter, response) => {
+	return new Promise((resolve, reject) => {
+		const agenda = cache.calendar;
+
+		const date = parameter.day + "/" + monthRef.indexOf(parameter.month).toString() + "/2018";
+		console.log("Date asked: " + date);
+		resolve();
+	});
+}
+
+const monthRef = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"];
 
 const dispo = (body, parameter, response) => {
 	return new Promise(async(resolve, reject) => {
@@ -29,7 +42,10 @@ const dispo = (body, parameter, response) => {
 		} else {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0] + "\n";
 			agenda.forEach(x => {
-				response.fulfillmentText += ` - Le ${x.date} à ${x.hour}.\n`;
+				const date = x.date.split("/");
+				const day = date[0];
+				const month = monthRef[+date[1]];
+				response.fulfillmentText += ` - Le ${day} ${month} à ${x.hour}.\n`;
 			});
 			response.fulfillmentText += "Souhaitez-vous que je répète?";
 		}
@@ -104,6 +120,8 @@ exports.webhook = async (req, res) => {
 		await rendezvous(body, parameters, response);
 	} else if (action === "disponibilités") {
 		await dispo(body, parameters, response);
+	} else if (action === "reservation") {
+		await resolveAny(body, parameters, response);
 	} else {
 		unrecognizedAction(response);
 	}

@@ -10,12 +10,12 @@ const config = require('./config.json');
 process.env.GOOGLE_APPLICATION_CREDENTIALS = path.resolve(config.googleApplicationCredentials);
 
 //launch the jaw script
-let jaw = require('child_process').spawn('python3', ["../inMoov/jaw/jaw.py", "--unplugged"]);
+let jaw = require('child_process').spawn("../inMoov/jaw/lip_sinc.py", ["2>", "/dev/null", "|", "python3", "../inMoov/jaw/jaw_control.py"]);
 jaw.stdout.on('data', data => console.log(`JAW STDOUT :\n${data}\n`));
 jaw.stderr.on('data', data => console.log(`JAW STDERR :\n${data}\n`));
-setInterval(() => {
+/*setInterval(() => {
 	jaw.stdin.write("DAB\n");
-}, 200);
+}, 200);*/
 
 //Socket.IO client
 const io = require('socket.io-client');
