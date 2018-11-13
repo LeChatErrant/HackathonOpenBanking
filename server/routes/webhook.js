@@ -21,11 +21,13 @@ const updateDb = (table, data) => {
 };
 
 const resa = (body, parameter, response) => {
-	const agenda = cache.calendar;
+	return new Promise((resolve, reject) => {
+		const agenda = cache.calendar;
 
-	const date = parameter.day + "/" + monthRef.indexOf(parameter.month).toString() + "/2018";
-	console.log("Date asked: " + date);
-
+		const date = parameter.day + "/" + monthRef.indexOf(parameter.month).toString() + "/2018";
+		console.log("Date asked: " + date);
+		resolve();
+	});
 }
 
 const monthRef = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Décembre"];
