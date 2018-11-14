@@ -29,6 +29,10 @@ def move_jaw(val) :
         str_diff = "j" + str(diff) + ",\n"
         jaw.write(str_diff.encode())
 
+def play_audio(in_data, frame_count, time_info, status):
+    data = wf.readframes(CHUNK)
+    return (data, pyaudio.paContinue)
+
 
 stream = 0
 p=pyaudio.PyAudio()
@@ -37,22 +41,8 @@ while True:
 
     wf = wave.open(input(), 'rb')
 
-    if stream == 0:
-        stream=p.open(format=p.get_format_from_width(wf.getsampwidth()),
-                        channels=wf.getnchannels(),
-                        rate=wf.getframerate(),
-                        output=True, input=False)
-    else:
-        stream.stop_stream()
-        stream.close()
-        stream=p.open(format=p.get_format_from_width(wf.getsampwidth()),
-                        channels=wf.getnchannels(),
-                        rate=wf.getframerate(),
-                        output=True, input=False)
-
-    audio = wf.readframes(CHUNK)
-
     maxPeak = 0;
+    audio = wf.readframes(CHUNK)
 
     while audio != b'':
         peak = np.average(np.abs(np.fromstring(audio,dtype=np.int16)))/100
@@ -61,14 +51,26 @@ while True:
         audio = wf.readframes(CHUNK)
 
     wf.rewind()
-    audio = wf.readframes(CHUNK)
 
-    while  audio != b'':
-        stream.write(audio)
-        peak = np.average(np.abs(np.fromstring(audio,dtype=np.int16)))
-        move_jaw(int(peak/maxPeak))
-        audio = wf.readframes(CHUNK)
-    move_jaw(0)
+    if stream == 0:
+        stream=p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                        channels=wf.getnchannels(),
+                        rate=wf.getframerate(),
+                        output=True,
+                        stream_callback= play_audio)
+    else:
+        stream.stop_stream()
+        stream.close()
+        stream=p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                        channels=wf.getnchannels(),
+                        rate=wf.getframerate(),
+                        output=True,
+                        stream_callback= play_audio)
+
+    stream.start_stream()
+
+    while stream.is_active():
+        time.sleep(0.1)
     print("DONE")
 
 stream.stop_stream()
