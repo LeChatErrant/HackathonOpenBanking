@@ -1,7 +1,8 @@
-const spawn = require('child_process').spawn;
+let date = new Date("2018-11-15T00:00:00+01:00");
+//console.log(date.getHours());
+//console.log(date.getMinutes());
 
-let jaw = require('child_process').spawn("../inMoov/jaw/lip_sinc.py");
-let jawController = require('child_process').spawn("python3", ["../inMoov/jaw/jaw_control.py"]);
-jawController.stdout.on('data', data => console.log(`JAWCONTROLLER STDOUT:\n${data}\n`));
-jawController.stderr.on('data', data => console.log(`JAWCONTROLLER STDERR:\n${data}\n`));
-jawController.stdin.write('./vocal.wav\n');
+let hour = date;
+//console.log(hour.getHours().toString().padStart(2, '0'))
+hour = hour.getHours().toString().padStart(2, '0') + ":" + hour.getMinutes().toString().padStart(2, '0');
+console.log(hour);
