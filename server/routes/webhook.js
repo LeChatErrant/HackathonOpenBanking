@@ -17,15 +17,28 @@ const getDb = (table) => {
 const updateDb = (table, data) => {
 	let ref = firebase.database().ref().child(table);
 	ref.update(data);
-
 };
 
 const resa = (body, parameter, response) => {
 	return new Promise((resolve, reject) => {
 		const agenda = cache.calendar;
 
-		const date = parameter.day + "/" + monthRef.indexOf(parameter.month).toString() + "/2018";
+		const date = parameter.day.padStart(2, '0') + "/" + (monthRef.indexOf(parameter.month) + 1).toString().padStart(2, '0') + "/2018";
+		let hour = new Date(parameter.hour);
+		hour = hour.getHours().toString().padStart(2, '0') + ":" + hour.getMinutes().toString().padStart(2, '0');
 		console.log("Date asked: " + date);
+		console.log(`Found hours: ${hour}`);
+
+		const existence = Object.keys(agenda).filter(x => agenda[x].date === date && agenda[x].hour === hour);
+		if (existence.length === 0) {
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
+		} else {
+			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+			cache.calendar[existence[0]] = null;
+			console.log(`New db data for ${parameter.conseiller}: `, cache);
+			updateDb("/conseillers/" + parameter.conseiller, cache);
+		}
+		response.fulfillmentText = strParameters(response.fulfillmentText, parameter);
 		resolve();
 	});
 }
@@ -44,7 +57,7 @@ const dispo = (body, parameter, response) => {
 			agenda.forEach(x => {
 				const date = x.date.split("/");
 				const day = date[0];
-				const month = monthRef[+date[1]];
+				const month = monthRef[+date[1] - 1];
 				response.fulfillmentText += ` - Le ${day} ${month} à ${x.hour}.\n`;
 			});
 			response.fulfillmentText += "Souhaitez-vous que je répète?";
