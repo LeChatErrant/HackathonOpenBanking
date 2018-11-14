@@ -9,7 +9,7 @@ const play = (filePath, jaw, jawController) => {
 	return new Promise((resolve, reject) => {
 		console.log("Play started");
 		jaw.stdin.write(path.resolve(filePath) + "\n");
-		jawController.stdout.once(data => {
+		jawController.stdout.once('data', data => {
 			console.log("Play finished");
 			resolve();
 		});
