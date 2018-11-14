@@ -24,9 +24,12 @@ const resa = (body, parameter, response) => {
 		const agenda = cache.calendar;
 
 		const date = parameter.day.padStart(2, '0') + "/" + (monthRef.indexOf(parameter.month) + 1).toString().padStart(2, '0') + "/2018";
+		let hour = new Date(parameter.hour);
+		hour = hour.getHours() + ":" + hour.getMinutes();
 		console.log("Date asked: " + date);
-		console.log(`Found hours: ${parameter.hour}`);
-		const existence = Object.keys(agenda).filter(x => agenda[x].date === date);
+		console.log(`Found hours: ${hour}`);
+
+		const existence = Object.keys(agenda).filter(x => agenda[x].date === date && agenda[x].hour === hour);
 		if (existence.length === 0) {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
 		} else {
