@@ -17,7 +17,6 @@ const getDb = (table) => {
 const updateDb = (table, data) => {
 	let ref = firebase.database().ref().child(table);
 	ref.update(data);
-
 };
 
 const resa = (body, parameter, response) => {
@@ -31,7 +30,11 @@ const resa = (body, parameter, response) => {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
 		} else {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
+			cache.calendar[existence[0]] = null;
+			console.log(`New db data for ${parameter.conseiller}: `, cache);
+			updateDb("/conseillers/" + parameter.conseiller, cache);
 		}
+		response.fulfillmentText = strParameters(response.fulfillmentText, parameter);
 		resolve();
 	});
 }
