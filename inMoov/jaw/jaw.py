@@ -1,10 +1,13 @@
-import fcntl
+#!/usr/bin/env python3
 import sys
-import os
-import time
-import tty
-import termios
 import serial
+import time
+import wave
+import numpy as np
+import pyaudio
+
+
+CHUNK = 1024
 
 unplug = False
 
@@ -13,42 +16,62 @@ if (len(sys.argv) > 1 and sys.argv[1] == "--unplugged") :
 
 if not unplug :
     jaw = serial.Serial("/dev/ttyUSB0", 9600)
-jaw_pos = 0
-content = ""
-speak_mode = False
 
-def move_jaw(speak_mode) :
-    global jaw_pos
-    global unplug
+currentJawPos = 45
 
-    if speak_mode == False and jaw_pos == 0 :
-        return
-    elif speak_mode == False :
-        if not unplug :
-            jaw.write("j-30,\n".encode())
-    else :
-        if jaw_pos == 0 :
-            if not unplug :
-                jaw.write("j30,\n".encode())
-        else :
-            if not unplug :
-                jaw.write("j-30,\n".encode())
-        jaw_pos = 0 if jaw_pos == 1 else 1
+def move_jaw(val) :
+    global currentJawPos
+    update_pos = int(val * 115 / 100)
+    diff = update_pos - currentJawPos
+    currentJawPos = currentJawPos + diff
+
+    if not unplug :
+        str_diff = "j" + str(diff) + ",\n"
+        jaw.write(str_diff.encode())
+
+
+stream = 0
+p=pyaudio.PyAudio()
 
 while True:
-    try:
-        content = input()
-    except :
-        break
-    if (content != "DAB") :
-        print(content)
-    if content == "q" :
-        break
-    if content == "j" :
-        speak_mode = True
-    if content == "s" :
-        speak_mode = False
-    move_jaw(speak_mode)
-    time.sleep(.1)
 
+    wf = wave.open(input(), 'rb')
+
+    if stream == 0:
+        stream=p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                        channels=wf.getnchannels(),
+                        rate=wf.getframerate(),
+                        output=True, input=False)
+    else:
+        stream.stop_stream()
+        stream.close()
+        stream=p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                        channels=wf.getnchannels(),
+                        rate=wf.getframerate(),
+                        output=True, input=False)
+
+    audio = wf.readframes(CHUNK)
+
+    maxPeak = 0;
+
+    while audio != b'':
+        peak = np.average(np.abs(np.fromstring(audio,dtype=np.int16)))/100
+        if peak > maxPeak:
+            maxPeak = peak
+        audio = wf.readframes(CHUNK)
+
+    wf.rewind()
+    audio = wf.readframes(CHUNK)
+
+    while  audio != b'':
+        stream.write(audio)
+        peak = np.average(np.abs(np.fromstring(audio,dtype=np.int16)))
+        move_jaw(int(peak/maxPeak))
+        audio = wf.readframes(CHUNK)
+    move_jaw(0)
+    print("DONE")
+
+stream.stop_stream()
+stream.close()
+p.terminate()
 jaw.close()

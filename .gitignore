@@ -63,3 +63,4 @@ typings/
 # mes bails
 __pycache__
 .vscode
+*.wav
