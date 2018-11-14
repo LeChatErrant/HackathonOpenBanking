@@ -59,6 +59,7 @@ while True:
                         rate=wf.getframerate(),
                         output=True,
                         stream_callback= play_audio)
+        stream.start_stream()
     else:
         stream.stop_stream()
         stream.close()
@@ -67,8 +68,7 @@ while True:
                         rate=wf.getframerate(),
                         output=True,
                         stream_callback= play_audio)
-
-    stream.start_stream()
+        stream.start_stream()
 
     while stream.is_active():
         time.sleep(0.1)
