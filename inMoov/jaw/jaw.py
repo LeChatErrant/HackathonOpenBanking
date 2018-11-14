@@ -29,19 +29,20 @@ def move_jaw(val) :
         str_diff = "j" + str(diff) + ",\n"
         jaw.write(str_diff.encode())
 
-def play_audio(in_data, frame_count, time_info, status):
-    data = wf.readframes(CHUNK)
-    return (data, pyaudio.paContinue)
-
-
+maxPeak = 0;
 stream = 0
 p=pyaudio.PyAudio()
+
+def play_audio(in_data, frame_count, time_info, status):
+    audio = wf.readframes(CHUNK)
+    peak = np.average(np.abs(np.fromstring(audio,dtype=np.int16)))
+    move_jaw(int(peak/maxPeak))
+    return (audio, pyaudio.paContinue)
 
 while True:
 
     wf = wave.open(input(), 'rb')
 
-    maxPeak = 0;
     audio = wf.readframes(CHUNK)
 
     while audio != b'':
@@ -71,6 +72,7 @@ while True:
 
     while stream.is_active():
         time.sleep(0.1)
+    move_jaw(0)
     print("DONE")
 
 stream.stop_stream()
