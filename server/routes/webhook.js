@@ -25,7 +25,7 @@ const resa = (body, parameter, response) => {
 
 		const date = parameter.day.padStart(2, '0') + "/" + (monthRef.indexOf(parameter.month) + 1).toString().padStart(2, '0') + "/2018";
 		let hour = new Date(parameter.hour);
-		hour = hour.getHours() + ":" + hour.getMinutes();
+		hour = hour.getHours().padStart(2, '0') + ":" + hour.getMinutes().padStart(2, '0');
 		console.log("Date asked: " + date);
 		console.log(`Found hours: ${hour}`);
 
