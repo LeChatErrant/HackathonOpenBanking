@@ -24,7 +24,7 @@ const resa = (body, parameter, response) => {
 	return new Promise((resolve, reject) => {
 		const agenda = cache.calendar;
 
-		const date = parameter.day + "/" + monthRef.indexOf(parameter.month).toString() + "/2018";
+		const date = parameter.day + "/" + (monthRef.indexOf(parameter.month) + 1).toString() + "/2018";
 		console.log("Date asked: " + date);
 		resolve();
 	});
@@ -44,7 +44,7 @@ const dispo = (body, parameter, response) => {
 			agenda.forEach(x => {
 				const date = x.date.split("/");
 				const day = date[0];
-				const month = monthRef[+date[1]];
+				const month = monthRef[+date[1] - 1];
 				response.fulfillmentText += ` - Le ${day} ${month} à ${x.hour}.\n`;
 			});
 			response.fulfillmentText += "Souhaitez-vous que je répète?";
