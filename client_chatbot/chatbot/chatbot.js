@@ -18,16 +18,16 @@ exports.init = () => {
 	//It makes scripts load before the first chatbot activation
 }
 
-const rec = async (jaw, jawController) => {
+const rec = async (jaw) => {
 	console.log("Starting the reply from the user...");
-	await vocal("./vocal.wav", toggle, sessionClient, session, jaw, jawController);
+	await vocal("./vocal.wav", toggle, sessionClient, session, jaw);
 	console.log("Reply from the user resolved!");
 	if (toggle.toggle === true) {
-		rec(jaw, jawController);
+		rec(jaw);
 	}
 }
 
-exports.chatbot = async (socket, jaw, jawController, data) => {
+exports.chatbot = async (socket, jaw, data) => {
 	console.log("InMoov activated! Metadata: \n", data);
 
 	toggle.toggle = true;
@@ -38,10 +38,10 @@ exports.chatbot = async (socket, jaw, jawController, data) => {
 
 	console.log("Initializing the conversation...");
 	if (toggle.toggle === false) return;
-	await text("loren ipsum ali baba", null, sessionClient, session, jaw, jawController);
+	await text("loren ipsum ali baba", null, sessionClient, session, jaw);
 	if (toggle.toggle === false) return;
-	await text(data.name, "./vocal.wav", sessionClient, session, jaw, jawController);
+	await text(data.name, "./vocal.wav", sessionClient, session, jaw);
 	if (toggle.toggle === false) return;
 	console.log("Initialisation resolved!");
-	rec(jaw, jawController);
+	rec(jaw);
 }
