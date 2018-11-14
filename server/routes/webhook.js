@@ -24,7 +24,7 @@ const resa = (body, parameter, response) => {
 	return new Promise((resolve, reject) => {
 		const agenda = cache.calendar;
 
-		const date = parameter.day + "/" + (monthRef.indexOf(parameter.month) + 1).toString().padStart(2, '0') + "/2018";
+		const date = parameter.day.padStart(2, '0') + "/" + (monthRef.indexOf(parameter.month) + 1).toString().padStart(2, '0') + "/2018";
 		console.log("Date asked: " + date);
 		const existence = Object.keys(agenda).filter(x => agenda[x].data === date);
 		if (existence.length === 0) {
