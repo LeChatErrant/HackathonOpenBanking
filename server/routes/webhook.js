@@ -26,7 +26,7 @@ const resa = (body, parameter, response) => {
 
 		const date = parameter.day.padStart(2, '0') + "/" + (monthRef.indexOf(parameter.month) + 1).toString().padStart(2, '0') + "/2018";
 		console.log("Date asked: " + date);
-		const existence = Object.keys(agenda).filter(x => agenda[x].data === date);
+		const existence = Object.keys(agenda).filter(x => agenda[x].date === date);
 		if (existence.length === 0) {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
 		} else {
