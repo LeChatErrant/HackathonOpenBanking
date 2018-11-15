@@ -37,6 +37,7 @@ exports.chatbot = async (socket, jaw, data) => {
 	});
 
 	console.log("Initializing the conversation...");
+	await text("C'est l'heure du d-d-demo days", "./demoDay.wav", sessionClient, session, jaw);
 	if (toggle.toggle === false) return;
 	await text("loren ipsum ali baba", null, sessionClient, session, jaw);
 	if (toggle.toggle === false) return;
