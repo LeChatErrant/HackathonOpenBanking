@@ -9,13 +9,14 @@ class InMoov :
         self.head = serial.Serial("/dev/ttyUSB0", 9600)
         self.neck = Neck(neck_coef)
         
-        
         self.head.write("z0,\n".encode())
 
     def animateHead(self, track) :
         if track.is_present :
             self.neck.neckLimSensor(track.tracked_object)
-            self.neck.animateNeck(self.head)
+            if (time.time() - self.neck.time_ref >= 0.2) :
+                self.neck.animateNeck(self.head)
+                self.neck.time_ref = time.time()
 
     def disp_map(self, img) :
         winW = 640
