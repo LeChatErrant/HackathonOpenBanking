@@ -14,8 +14,8 @@ const record = () => {
 	return new Promise((resolve, reject) => {
 		console.log("Record started!");
 		const cmd = spawn("arecord", [ "-D" ,"plughw:1", "-c", "1", "-f", "S16_LE", "-r", "16000", "-t", "wav"]);
-		resolve(cmd);
 		cmd.stderr.on('data', data=>console.log(data.toString()));
+		resolve(cmd);
 	});
 }
 
@@ -48,9 +48,11 @@ class Timer {
 		this.timeout = timeout;
 		this.callback = callback;
 		this.actual = 0;
+		this.isStarted = false;
 	}
 
 	start() {
+		this.isStarted = true;
 		this.check = setInterval(() => {
 			this.actual += 100;
 			console.log(this.actual);
@@ -87,8 +89,7 @@ class Timer {
 
 
 const handleData = async (data, filePath, resolve, toggle, jaw) => {
-	if (!timer) {
-		timer = new Timer(2000, stop);
+	if (!timer.started) {
 		timer.start();
 		timer.stopWhen(toggle, "toggle", false);
 	}
@@ -154,6 +155,7 @@ exports.vocal = (filePath, toggle, sessionClient, session, jaw) => {
 		detectStream.write(initialStreamRequest);
 
 		prg = await record();
+		timer = new Timer(2000, stop);
 		pump(
 			prg.stdout,
 			through2.obj((obj, _, next) => {
