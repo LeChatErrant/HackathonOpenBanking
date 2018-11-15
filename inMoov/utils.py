@@ -1,24 +1,13 @@
-def percent_of(percent, max) :
-    return (percent * max / 100)
+# Colors
+BLUE = (255, 0, 0)
+GREEN = (0, 255, 0)
+RED = (0, 0, 255)
 
+# Window size
+winW = 640
+winH = 480
 
-def is_minus(degree) :
-    if '-' in degree :
-        return ("-")
-    return ("")
-
-def moveHeadTo(head, degree) :
-    eyes = False
-    if degree[0] == 'x' :
-        print("Xeyes")
-        tmp = "a" + is_minus(degree) + "20,\n"
-        head.write(tmp.encode())
-        eyes = True
-    elif degree[0] == 'y' :
-        print("Yeyes")
-        tmp = "b" + is_minus(degree) + "20,\n"
-        head.write(tmp.encode())
-        eyes = True
-    head.write(degree.encode())
-    if eyes == True :
-        head.write("r0,\n".encode())
+# NECK
+BaseHeadDegreeX = 90
+BaseHeadDegreeY = 90
+neck_coef = 40
