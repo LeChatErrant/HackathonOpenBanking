@@ -6,7 +6,7 @@ from track import Tracking
 start = 0
 cam = cv2.VideoCapture(2)
 
-inMoov = InMoov(28, 20)
+inMoov = InMoov(20, 20)
 track = Tracking()
 
 while True :
