@@ -89,9 +89,10 @@ class Timer {
 
 
 const handleData = async (data, filePath, resolve, toggle, jaw) => {
-	if (!timer.started) {
+	console.log("toggle state: ", toggle.toggle);
+	if (toggle.toggle === false) return;
+	if (!timer.isStarted) {
 		timer.start();
-		timer.stopWhen(toggle, "toggle", false);
 	}
 	if (toggle.toggle === false) return;
 	if (data.recognitionResult) {
@@ -156,6 +157,7 @@ exports.vocal = (filePath, toggle, sessionClient, session, jaw) => {
 
 		prg = await record();
 		timer = new Timer(2000, stop);
+		timer.stopWhen(toggle, "toggle", false);
 		pump(
 			prg.stdout,
 			through2.obj((obj, _, next) => {
