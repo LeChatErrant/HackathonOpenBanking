@@ -40,13 +40,12 @@ class Timer {
 		this.callback = callback;
 		this.actual = 0;
 		this.isStarted = false;
-		this.lifetime = 10;
+		this.lifetime = 50;
 		this.lifetimeCount = 0;
 		this.lifetimeCheck = setInterval(() => {
 			this.lifetimeCount += 10;
 			console.log("Timer actual lifetime: " + this.lifetimeCount.toString());
 			if (this.lifetimeCount >= this.lifetime) {
-				clearInterval(this.lifetimeCheck);
 				this.isStarted = true;
 				this.finish();
 			}
@@ -76,6 +75,7 @@ class Timer {
 			clearInterval(this.tmp);
 		}
 		clearInterval(this.check);
+		clearInterval(this.lifetimeCheck);
 		console.log("TIMER FORCE ENDED");
 		this.callback();
 	}
@@ -127,6 +127,9 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 				console.log(`  Intent: ${result.intent.displayName}\n`);
 			} else {
 				console.log(`  No intent matched.\n`);
+				await play("default.wav", jaw);
+				timer = undefined;
+				resolve();
 			}
 			console.log("Output contexts: ");
 			console.log(result.outputContexts.map(x => x.name.split("/")[x.name.split('/').length-1]));
@@ -134,12 +137,6 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 			console.log(result.fulfillmentText);
 			console.log("\n");
 		} else {
-			/*			await play("default.wav", jaw);
-			timer = undefined;
-			resolve();
-			*/
-			console.log("Are we there")
-			console.log(data.outputAudio);
 			fs.writeFileSync(filePath, data.outputAudio);
 			await play(filePath, jaw);
 			timer = undefined;
