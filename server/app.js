@@ -54,9 +54,11 @@ io.on('connection', function(socket){
 	stdin.on('data', chunk => {
 		if (toggle === false) {
 			socket.emit('activate', {name: "Guillaume"});
+			console.log("Chatbot activated!");
 			toggle = true;
 		} else {
 			socket.emit('desactivate');
+			console.log("Chatbot desactivated!");
 			toggle = false;
 		}
 	});

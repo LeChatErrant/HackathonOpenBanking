@@ -13,15 +13,6 @@ const play = (filePath, jaw) => {
 			console.log("Play finished");
 			resolve();
 		});
-		/*
-		jaw.stdin.write("j\n");
-		let child = exec(`aplay ${filePath}`);
-		child.prependListener('exit', () => {
-			jaw.stdin.write("s\n");
-			console.log("Play finished");
-			resolve();
-		});
-		*/
 	});
 }
 

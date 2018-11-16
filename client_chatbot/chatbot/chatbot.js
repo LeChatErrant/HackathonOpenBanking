@@ -4,8 +4,6 @@ const fs = require('fs');
 const text = require('./text').text;
 const vocal = require('./vocal').vocal;
 
-let toggle = {toggle: true};
-
 //configuration
 const sessionClient = new dialogflow.SessionsClient();
 const projectId = config.projectId;
@@ -18,22 +16,26 @@ exports.init = () => {
 	//It makes scripts load before the first chatbot activation
 }
 
-const rec = async (jaw) => {
+const rec = async (jaw, toggle) => {
 	console.log("Starting the reply from the user...");
 	await vocal("./vocal.wav", toggle, sessionClient, session, jaw);
 	console.log("Reply from the user resolved!");
 	if (toggle.toggle === true) {
-		rec(jaw);
+		rec(jaw, toggle);
 	}
 }
 
-exports.chatbot = async (socket, jaw, data) => {
+exports.chatbot = async (socket, data) => {
 	console.log("InMoov activated! Metadata: \n", data);
 
-	toggle.toggle = true;
-	socket.on('desactivate', () => {
+	//Launch the jaw script
+	let jaw = require('child_process').spawn("../inMoov/jaw/jaw.py", ["--unplugged"]);
+	jaw.stdout.on('data', data => console.log(`JAW STDOUT :\n${data}\n`));
+
+	let toggle = {toggle: true};
+	socket.once('desactivate', () => {
 		console.log("Received: desactivate");
-		toggle.toggle = false
+		toggle.toggle = false;
 	});
 
 	console.log("Initializing the conversation...");
@@ -43,5 +45,5 @@ exports.chatbot = async (socket, jaw, data) => {
 	await text(data.name, "./vocal.wav", sessionClient, session, jaw);
 	if (toggle.toggle === false) return;
 	console.log("Initialisation resolved!");
-	rec(jaw);
+	rec(jaw, toggle);
 }

@@ -90,11 +90,17 @@ class Timer {
 
 const handleData = async (data, filePath, resolve, toggle, jaw) => {
 	console.log("toggle state: ", toggle.toggle);
-	if (toggle.toggle === false) return;
+	if (toggle.toggle === false) {
+		resolve();
+		return;
+	}
 	if (!timer.isStarted) {
 		timer.start();
 	}
-	if (toggle.toggle === false) return;
+	if (toggle.toggle === false) {
+		resolve()
+		return;
+	};
 	if (data.recognitionResult) {
 		timer.reset();
 		console.log(
