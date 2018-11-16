@@ -21,7 +21,7 @@ class InMoov :
             if track.nb_rotation == 0 :
                 track.clock = time.time()
                 track.wait = random.randint(4, 10)
-
+        
     def disp_map(self, img) :     
         cv2.rectangle(img, (self.neck.neckLim['left'], 0), (self.neck.neckLim['left'], winH), RED, 3)
         cv2.rectangle(img, (self.neck.neckLim['right'], 0), (self.neck.neckLim['right'], winH), RED, 3)

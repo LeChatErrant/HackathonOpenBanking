@@ -40,6 +40,16 @@ class Timer {
 		this.callback = callback;
 		this.actual = 0;
 		this.isStarted = false;
+		this.lifetime = 50;
+		this.lifetimeCount = 0;
+		this.lifetimeCheck = setInterval(() => {
+			this.lifetimeCount += 10;
+			console.log("Timer actual lifetime: " + this.lifetimeCount.toString());
+			if (this.lifetimeCount >= this.lifetime) {
+				clearInterval(this.lifetimeCheck);
+				this.finish();
+			}
+		}, 10000);
 	}
 
 	start() {
@@ -48,10 +58,7 @@ class Timer {
 			this.actual += 100;
 			console.log(this.actual);
 			if (this.actual >= this.timeout) {
-				this.isFinished = true;
-				clearInterval(this.check);
-				console.log("TIMER ENDED");
-				this.callback()
+				this.finish();
 			}
 		}, 100);
 	}
@@ -62,15 +69,21 @@ class Timer {
 
 	finish() {
 		this.isFinished = true;
+		if (this.tmp) {
+			console.log("CLearing tmp");
+			clearInterval(this.tmp);
+		}
 		clearInterval(this.check);
 		console.log("TIMER FORCE ENDED");
 		this.callback();
 	}
 
 	stopWhen(obj, ref, state) {
-		let tmp = setInterval(() => {
+		this.tmp = setInterval(() => {
 			if (obj[ref] === state) {
-				clearInterval(tmp);
+				clearInterval(this.tmp);
+				this.tmp = undefined;
+				console.log("stopWhen finished");
 				this.finish();
 				timer = undefined;
 			}
