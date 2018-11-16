@@ -33,9 +33,10 @@ exports.chatbot = async (socket, data) => {
 	jaw.stdout.on('data', data => console.log(`JAW STDOUT :\n${data}\n`));
 
 	let toggle = {toggle: true};
-	socket.once('desactivate', () => {
+	socket.once('desactivate', async () => {
 		console.log("Received: desactivate");
 		toggle.toggle = false;
+		await text("Par mes pouvoirs d'admin, je te reset!", null, sessionClient, session, jaw);
 	});
 
 	console.log("Initializing the conversation...");

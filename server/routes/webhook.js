@@ -83,6 +83,11 @@ const rendezvous = (body, parameter, response) => {
 	});
 }
 
+const reset = (body, parameter, response) => {
+	response.outputContexts = body.queryResult.outputContexts;
+	response.outputContexts.forEach(x => x.lifespanCount = 0);
+}
+
 const strParameters = (str, parameters) => {
 	Object.keys(parameters).forEach(parameter => {
 		console.log("Searching for " + "$" + parameter);
@@ -127,6 +132,8 @@ exports.webhook = async (req, res) => {
 
 	if (action === "input.welcome") {
 		welcomeLogged(body, parameters, response);
+	} else if (action === "reset") {
+		reset(body, parameters, response);
 	} else if (action === "replace") {
 		simpleReplace(body, parameters, response);
 	} else if (action === "rendezvous") {
