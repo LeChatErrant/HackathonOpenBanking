@@ -86,8 +86,10 @@ const rendezvous = (body, parameter, response) => {
 }
 
 const reset = (body, parameter, response) => {
-	response.outputContexts = body.queryResult.outputContexts;
-	response.outputContexts.forEach(x => x.lifespanCount = 0);
+	if (body.queryResult.outputContexts) {
+		response.outputContexts = body.queryResult.outputContexts;
+		response.outputContexts.forEach(x => x.lifespanCount = 0);
+	}
 }
 
 const strParameters = (str, parameters) => {
