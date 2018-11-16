@@ -46,17 +46,18 @@ app.use('/', routes);
 let socket;
 const io = require('socket.io')(httpsServer);
 
+let toggle = false;
 io.on('connection', function(sock){
 	socket = sock;
 	console.log('A new user connected\n');
 	socket.once('disconnect', () => {
 		console.log("A user disconnected\n")
 		socket = undefined;
+		toggle = false;
 	});
 });
 
 //Testing purpose only, to delete before release
-let toggle = false;
 let stdin = process.openStdin();
 stdin.on('data', chunk => {
 	if (!socket) {
