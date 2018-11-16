@@ -53,7 +53,7 @@ io.on('connection', function(socket){
 	let toggle = false;
 	stdin.on('data', chunk => {
 		if (toggle === false) {
-			if (chunk.length === 0) {
+			if (chunk.length <= 1) {
 				console.log("Enter a name for the user, please");
 			} else {
 				socket.emit('activate', {name: chunk});
