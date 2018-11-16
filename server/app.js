@@ -43,27 +43,37 @@ console.log(`Listening on ${port} with HTTPS...`);
 app.use('/', routes);
 
 //Socket.IO server
+let socket;
 const io = require('socket.io')(httpsServer);
-io.on('connection', function(socket){
-	console.log('A new user connected\n');
-	socket.on('disconnect', () => console.log("A user disconnected\n"));
 
-	//Testing purpose only, to delete before release
-	var stdin = process.openStdin();
-	let toggle = false;
-	stdin.on('data', chunk => {
-		if (toggle === false) {
-			if (chunk.length <= 1) {
-				console.log("Enter a name for the user, please");
-			} else {
-				socket.emit('activate', {name: chunk});
-				console.log("Chatbot activated!");
-				toggle = true;
-			}
-		} else {
-			socket.emit('desactivate');
-			console.log("Chatbot desactivated!");
-			toggle = false;
-		}
+io.on('connection', function(sock){
+	socket = sock;
+	console.log('A new user connected\n');
+	socket.once('disconnect', () => {
+		console.log("A user disconnected\n")
+		socket = undefined;
 	});
+});
+
+//Testing purpose only, to delete before release
+let toggle = false;
+let stdin = process.openStdin();
+stdin.on('data', chunk => {
+	if (!socket) {
+		console.log("No client connected!");
+		return;
+	}
+	if (toggle === false) {
+		if (chunk.length <= 1) {
+			console.log("Enter a name for the user, please");
+		} else {
+			socket.emit('activate', {name: chunk});
+			console.log("Chatbot activated!");
+			toggle = true;
+		}
+	} else {
+		socket.emit('desactivate');
+		console.log("Chatbot desactivated!");
+		toggle = false;
+	}
 });

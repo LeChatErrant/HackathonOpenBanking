@@ -40,19 +40,21 @@ class Timer {
 		this.callback = callback;
 		this.actual = 0;
 		this.isStarted = false;
-		this.lifetime = 50;
+		this.lifetime = 10;
 		this.lifetimeCount = 0;
 		this.lifetimeCheck = setInterval(() => {
 			this.lifetimeCount += 10;
 			console.log("Timer actual lifetime: " + this.lifetimeCount.toString());
 			if (this.lifetimeCount >= this.lifetime) {
 				clearInterval(this.lifetimeCheck);
+				this.isStarted = true;
 				this.finish();
 			}
 		}, 10000);
 	}
 
 	start() {
+		console.log("Started timer");
 		this.isStarted = true;
 		this.check = setInterval(() => {
 			this.actual += 100;
@@ -132,6 +134,12 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 			console.log(result.fulfillmentText);
 			console.log("\n");
 		} else {
+			/*			await play("default.wav", jaw);
+			timer = undefined;
+			resolve();
+			*/
+			console.log("Are we there")
+			console.log(data.outputAudio);
 			fs.writeFileSync(filePath, data.outputAudio);
 			await play(filePath, jaw);
 			timer = undefined;
