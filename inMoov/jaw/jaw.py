@@ -35,8 +35,9 @@ p=pyaudio.PyAudio()
 
 def play_audio(in_data, frame_count, time_info, status):
     audio = wf.readframes(CHUNK)
-    peak = np.average(np.abs(np.fromstring(audio,dtype=np.int16)))
-    move_jaw(int(peak/maxPeak))
+    if (audio != b''):
+        peak = np.average(np.abs(np.fromstring(audio,dtype=np.int16)))
+        move_jaw(int(peak/maxPeak))
     return (audio, pyaudio.paContinue)
 
 while True:
@@ -59,7 +60,6 @@ while True:
                         rate=wf.getframerate(),
                         output=True,
                         stream_callback= play_audio)
-        stream.start_stream()
     else:
         stream.stop_stream()
         stream.close()
@@ -68,8 +68,8 @@ while True:
                         rate=wf.getframerate(),
                         output=True,
                         stream_callback= play_audio)
-        stream.start_stream()
 
+    stream.start_stream()
     while stream.is_active():
         time.sleep(0.1)
     move_jaw(0)
