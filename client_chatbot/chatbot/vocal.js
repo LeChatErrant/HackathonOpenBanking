@@ -31,15 +31,6 @@ const play = (filePath, jaw) => {
 			console.log("Play finished");
 			resolve();
 		});
-		/*
-		jaw.stdin.write("j\n");
-		let child = exec(`aplay ${filePath}`);
-		child.prependListener('exit', () => {
-			jaw.stdin.write("s\n");
-			console.log("Play finished");
-			resolve();
-		});
-		*/
 	});
 }
 
@@ -122,6 +113,8 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 			} else {
 				console.log(`  No intent matched.\n`);
 			}
+			console.log("Output contexts: ");
+			console.log(result.outputContexts.map(x => x.name.split("/")[x.name.split('/').length-1]));
 			console.log("Result:");
 			console.log(result.fulfillmentText);
 			console.log("\n");

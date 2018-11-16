@@ -45,7 +45,7 @@ exports.text = (input, filePath, sessionClient, session, jaw) => {
 				console.log(`  No intent matched.\n`);
 			}
 			console.log("Output contexts: ");
-			console.log(result.outputContexts);
+			console.log(result.outputContexts.map(x => x.name.split("/")[x.name.split('/').length-1]));
 			console.log("Result:");
 			console.log(result.fulfillmentText);
 			console.log("\n");
