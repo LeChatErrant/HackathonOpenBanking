@@ -29,7 +29,7 @@ exports.chatbot = async (socket, data) => {
 	console.log("InMoov activated! Metadata: \n", data);
 
 	//Launch the jaw script
-	let jaw = require('child_process').spawn("../inMoov/jaw/jaw.py", ["--unplugged"]);
+	let jaw = require('child_process').spawn("../inMoov/jaw/jaw.py"/*, ["--unplugged"]*/);
 	jaw.stdout.on('data', data => console.log(`JAW STDOUT :\n${data}\n`));
 
 	let toggle = {toggle: true};
