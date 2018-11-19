@@ -93,6 +93,11 @@ class Timer {
 	}
 }
 
+const aborted = async (resolve, jaw) => {
+	await play("default.wav", jaw);
+	timer = undefined;
+	resolve();
+}
 
 const handleData = async (data, filePath, resolve, toggle, jaw) => {
 	console.log("toggle state: ", toggle.toggle);
@@ -127,9 +132,7 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 				console.log(`  Intent: ${result.intent.displayName}\n`);
 			} else {
 				console.log(`  No intent matched.\n`);
-				await play("default.wav", jaw);
-				timer = undefined;
-				resolve();
+				aborted(resolve, jaw);
 			}
 			console.log("Output contexts: ");
 			console.log(result.outputContexts.map(x => x.name.split("/")[x.name.split('/').length-1]));
@@ -166,13 +169,23 @@ exports.vocal = (filePath, toggle, sessionClient, session, jaw) => {
 
 		const detectStream = sessionClient
 		.streamingDetectIntent()
-		.on('error', console.error)
+		.on('error', (e) => {
+			console.error("ERROR IN STREAMDETECTINTENT: ", e);
+			aborted(resolve, jaw);
+			timer = undefined;
+		})
 		.on('data', data => handleData(data, filePath, resolve, toggle, jaw));
 
 		// Write the initial stream request to config for audio input.
 		detectStream.write(initialStreamRequest);
 
-		prg = await record();
+		try {
+			prg = await record();
+		} catch (e) {
+			aborted(resolve, jaw);
+			timer = undefined;
+			return;
+		}
 		timer = new Timer(2000, stop);
 		timer.stopWhen(toggle, "toggle", false);
 		pump(
