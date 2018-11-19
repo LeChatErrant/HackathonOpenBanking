@@ -42,7 +42,6 @@ exports.chatbot = async (socket, data) => {
 	console.log("Initializing the conversation...");
 	if (toggle.toggle === false) return;
 	await text("loren ipsum ali baba", null, sessionClient, session, jaw);
-	if (toggle.toggle === false) return;
 	await text(data.name, "./vocal.wav", sessionClient, session, jaw);
 	if (toggle.toggle === false) return;
 	console.log("Initialisation resolved!");
