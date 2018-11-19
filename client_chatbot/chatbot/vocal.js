@@ -141,10 +141,10 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 			console.log("Result:");
 			console.log(result.fulfillmentText);
 			if (result.fulfillmentText.indexOf("Rap god") >= 0) {
-				music = "../inMoov/jaw/sample/Rap_God.wav" + "\n";
+				music = "../inMoov/jaw/sample/Rap_God.wav";
 			}
 			if (result.fulfillmentText.indexOf("Queen") >= 0) {
-				music = "../inMoov/jaw/sample/Queen.wav" + "\n";
+				music = "../inMoov/jaw/sample/Queen.wav";
 			}
 			console.log("\n");
 		} else {

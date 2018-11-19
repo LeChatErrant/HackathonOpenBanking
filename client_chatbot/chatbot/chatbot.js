@@ -30,7 +30,8 @@ exports.chatbot = async (socket, data) => {
 
 	//Launch the jaw script
 	let jaw = require('child_process').spawn("../inMoov/jaw/jaw.py"/*, ["--unplugged"]*/);
-	jaw.stdout.on('data', data => console.log(`JAW STDOUT :\n${data}\n`));
+    jaw.stdout.on('data', data => console.log(`JAW STDOUT :\n${data}\n`));
+    jaw.stderr.on('data', data => console.log(`JAW STDERR:\n${data}\n`));
 
 	let toggle = {toggle: true};
 	socket.once('desactivate', async () => {
