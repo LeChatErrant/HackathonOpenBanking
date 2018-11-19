@@ -99,6 +99,8 @@ const aborted = async (resolve, jaw) => {
 	resolve();
 }
 
+let music;
+
 const handleData = async (data, filePath, resolve, toggle, jaw) => {
 	console.log("toggle state: ", toggle.toggle);
 	if (toggle.toggle === false) {
@@ -138,10 +140,19 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 			console.log(result.outputContexts.map(x => x.name.split("/")[x.name.split('/').length-1]));
 			console.log("Result:");
 			console.log(result.fulfillmentText);
+			if (result.fulfillmentText.indexOf("Rap god") >= 0) {
+				music = "../inMoov/jaw/sample/Rap_God.wav" + "\n";
+			}
+			if (result.fulfillmentText.indexOf("Queen") >= 0) {
+				music = "../inMoov/jaw/sample/Queen.wav" + "\n";
+			}
 			console.log("\n");
 		} else {
 			fs.writeFileSync(filePath, data.outputAudio);
 			await play(filePath, jaw);
+			if (music !== false) {
+				await play(music, jaw);
+			}
 			timer = undefined;
 			resolve();
 		}
@@ -150,6 +161,7 @@ const handleData = async (data, filePath, resolve, toggle, jaw) => {
 
 exports.vocal = (filePath, toggle, sessionClient, session, jaw) => {
 	return new Promise(async (resolve, reject) => {
+		music = false;
 		const initialStreamRequest = {
 			session: session,
 			queryParams: {
