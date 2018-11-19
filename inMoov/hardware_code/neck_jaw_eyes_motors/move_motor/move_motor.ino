@@ -38,8 +38,8 @@ void moveServoTo(int angle, char axis) {
     jaw.write(65);
     eyesX.write(100);
     eyesY.write(70);
-  } 
-  
+  }
+
   else if (axis == 'x') {
     last_pos = neckX.read();
     pos = last_pos + angle;
@@ -47,7 +47,7 @@ void moveServoTo(int angle, char axis) {
       return;
     neckX.write(pos);
   }
-  
+
   else if (axis == 'y') {
     last_pos = neckY.read();
     pos = last_pos + angle;
@@ -55,7 +55,7 @@ void moveServoTo(int angle, char axis) {
       return;
     neckY.write(pos);
   }
-   
+
   else if (axis == 'j') {
     last_pos = jaw.read();
     pos = last_pos + angle;
@@ -63,8 +63,8 @@ void moveServoTo(int angle, char axis) {
       return;
     jaw.write(pos);
     return;
-  } 
-  
+  }
+
   else if (axis == 'a') {
     if (angle == 0) {
       eyesX.write(115);
@@ -73,7 +73,7 @@ void moveServoTo(int angle, char axis) {
     }
     t = 0.1;
   }
-  
+
   else if (axis == 'b') {
     last_pos = eyesY.read();
     pos = last_pos + angle;
