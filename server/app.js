@@ -79,9 +79,11 @@ stdin.on('data', chunk => {
 	}
 });
 
-process.on('exit', () => {
+const exit = () => {
 	if (toggle === true) {
 		console.log("Chatbot force desactivated cause server is shutting down");
 		socket.emit('desactivate');
 	}
-});
+}
+process.on('exit', exit);
+process.on('SIGINT', exit);
