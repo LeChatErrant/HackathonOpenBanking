@@ -13,7 +13,7 @@ let timer;
 const record = () => {
 	return new Promise((resolve, reject) => {
 		console.log("Record started!");
-		const cmd = spawn("arecord", [ "-D" ,"plughw:2", "-c", "1", "-f", "S16_LE", "-r", "16000", "-t", "wav"]);
+		const cmd = spawn("arecord", [ "-D" ,"plughw:1", "-c", "1", "-f", "S16_LE", "-r", "16000", "-t", "wav"]);
 		cmd.stderr.on('data', data=>console.log(data.toString()));
 		resolve(cmd);
 	});
@@ -94,6 +94,7 @@ class Timer {
 }
 
 const aborted = async (resolve, jaw) => {
+	timer.finish();
 	await play("default.wav", jaw);
 	timer = undefined;
 	resolve();
