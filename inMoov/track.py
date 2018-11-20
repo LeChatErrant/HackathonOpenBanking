@@ -8,7 +8,7 @@ class Tracking :
         self.tracked_object = [winW / 2, winH / 2]
         self.face_cascade = cv2.CascadeClassifier('cascade_classifier/lbpcascade_frontalface_improved.xml')
         self.clock = 0
-        self.wait = random.randint(4, 10)
+        self.wait = random.randint(3, 7)
         self.nb_rotation = 0
         self.dir = {'X' : 0, 'Y' : 0}
         

@@ -4,7 +4,7 @@ import keyboard
 from inMoov import InMoov
 from track import Tracking
 
-cam = cv2.VideoCapture(1)
+cam = cv2.VideoCapture(0)
 inMoov = InMoov(20)
 track = Tracking()
 
