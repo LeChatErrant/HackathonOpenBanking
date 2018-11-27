@@ -20,7 +20,7 @@ class InMoov :
             self.neck.findPerson(track, self.head)
             if track.nb_rotation == 0 :
                 track.clock = time.time()
-                track.wait = random.randint(3, 7)
+                track.wait = random.randint(2, 4)
 
     def disp_map(self, img) :
         cv2.rectangle(img, (self.neck.neckLim['left'], 0), (self.neck.neckLim['left'], winH), RED, 3)
