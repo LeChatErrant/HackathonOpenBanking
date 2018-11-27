@@ -20,7 +20,7 @@ def shoot(cap) :
     print("Just stay in front of me I will take a photo !")
     while (fail == 1) :
         for i in range(3, 0, -1) :
-            time.sleep(1)
+            time.sleep(1.5)
             print(i)
         time.sleep(1)
         print("SNAPE")
@@ -80,10 +80,10 @@ while (True) :
             cap = cv2.VideoCapture(0)
     if reg == 3 :
         cv2.destroyAllWindows()
-        print("I am not recognizing you ...\nMaybe I dont know you ?\n")
+        print("I can't recognizing you ...\nMaybe I dont know you ?")
         if (input("would you like to register ? (y/n)") == "y") :
             name = input("ok lets go !\nType your name : ")
-            response = cf.person.create(PERSON_GROUP_ID, name, 'More information can go here')
+            response = cf.person.create(PERSON_GROUP_ID, name, str(len(cf.person.lists(PERSON_GROUP_ID))))
             person_id = response['personId']
             shoot(cap)
             cf.person.add_face('./register.jpg', PERSON_GROUP_ID, person_id)
