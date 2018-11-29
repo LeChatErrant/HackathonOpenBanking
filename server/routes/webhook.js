@@ -29,7 +29,7 @@ const resa = (body, parameter, response) => {
 		console.log("Date asked: " + date);
 		console.log(`Found hours: ${hour}`);
 
-		const existence = Object.keys(agenda).filter(x => agenda[x].date === date && agenda[x].hour === hour);
+		const existence = Object.keys(agenda).filter(x => agenda[x].date === date && agenda[x].hour === hour && !agenda[x].reservation);
 		if (existence.length === 0) {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
 		} else {
