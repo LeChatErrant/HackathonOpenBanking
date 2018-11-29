@@ -55,7 +55,7 @@ const dispo = (body, parameter, response) => {
 		} else {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0] + "\n";
 			let freeAgenda = agenda.filter(x => !x.reservation);
-			agenda.forEach(x => {
+			freeAgenda.forEach(x => {
 				const date = x.date.split("/");
 				const day = date[0];
 				const month = monthRef[+date[1] - 1];
