@@ -87,7 +87,7 @@ void moveServoTo(int angle, char axis) {
     eyesY.write(70);
     t = 0.1;
   }
-  delay(t * 1000);
+  //delay(t * 1000);
 }
 
 void loop() {
@@ -106,8 +106,8 @@ void loop() {
       index = 0;
       start = 0;
       value = atoi(input);
-      Serial.println(axis);
-      Serial.println(value);
+      //Serial.println(axis);
+      //Serial.println(value);
       moveServoTo(value, axis);
     }
   }

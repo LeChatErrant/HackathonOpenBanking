@@ -4,7 +4,7 @@ import keyboard
 from inMoov import InMoov
 from track import Tracking
 
-cam = cv2.VideoCapture(1)
+cam = cv2.VideoCapture(2)
 inMoov = InMoov(20)
 track = Tracking()
 
@@ -22,6 +22,6 @@ while True :
     if keyboard.is_pressed(" ") :
         break
     cv2.circle(frame, (int(track.tracked_object[0]), int(track.tracked_object[1])), 4, RED, 3)
-    tmp = cv2.resize(frame, (1680, 1050))
+    tmp = cv2.resize(frame, (840, 525))
     cv2.imshow("acc_track", tmp)
     cv2.waitKey(1)
