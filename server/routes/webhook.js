@@ -34,7 +34,7 @@ const resa = (body, parameter, response) => {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[1].text.text[0];
 		} else {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0];
-			cache.calendar[existence[0]] = null;
+			cache.calendar[existence[0]].reservation = parameter.name;
 			console.log(`New db data for ${parameter.conseiller}: `, cache);
 			updateDb("/conseillers/" + parameter.conseiller, cache);
 		}
@@ -54,6 +54,7 @@ const dispo = (body, parameter, response) => {
 			response.outputContexts[0].lifespanCount = 0;
 		} else {
 			response.fulfillmentText = body.queryResult.fulfillmentMessages[0].text.text[0] + "\n";
+			let freeAgenda = agenda.filter(x => !x.reservation);
 			agenda.forEach(x => {
 				const date = x.date.split("/");
 				const day = date[0];
