@@ -15,10 +15,10 @@ def identify_person(face_ids, PERSON_GROUP_ID) :
     return (False)
 
 def shoot(cap) :
-    fail = 1
+    ret = True
 
     print("Just stay in front of me I will take a photo !")
-    while (fail == 1) :
+    while (True) :
         for i in range(3, 0, -1) :
             time.sleep(1.5)
             print(i)
@@ -32,12 +32,42 @@ def shoot(cap) :
             time.sleep(0.8)
             print("Lets retry !")
             time.sleep(1)
-            fail = 1
-        else :
-            fail = 0
-    print("Yeah !\nNow let me register you on the data base !")
-    cv2.imwrite("./register.jpg", frame)
+            continue
+            cap.release()
+            cap = cv2.VideoCapture(0)
+            ret = False
+        print("Yeah !\nNow let me register you on the data base !")
+        cv2.imwrite("./register.jpg", frame)
+        try :
+            cf.person.add_face('./register.jpg', PERSON_GROUP_ID, person_id)
+        except :
+            print("An error occured ...")
+            time.sleep(0.8)
+            print("Lets retry !")
+            time.sleep(1)
+            cap.release()
+            cap = cv2.VideoCapture(0)
+            ret = False
+            continue
+        break
+    return(ret)
 
+def enumDataBase(groupe_id) :
+    db = cf.person.lists(groupe_id)
+    n = len(db) - 1
+
+    for person in db :
+        if int(person["userData"]) != n :
+            cf.person.update(groupe_id, person["personId"], user_data=str(n))
+        print(person["name"], " - ", person["userData"])
+        n -= 1
+
+def removeFromDataBase(groupe_id, name) :
+    db = cf.person.lists(groupe_id)
+
+    for person in db :
+        if person["name"] == name :
+            cf.person.delete(groupe_id, person["personId"])
 
 KEY = 'f76bc5e810ca4526bdfa4d31923b1f7c'
 BASE_URL = 'https://eastus.api.cognitive.microsoft.com/face/v1.0'
@@ -50,7 +80,8 @@ cap = cv2.VideoCapture(0)
 
 reg = 0
 
-#print(cf.person.lists(PERSON_GROUP_ID))
+enumDataBase(PERSON_GROUP_ID)
+removeFromDataBase(PERSON_GROUP_ID, "Toto")
 
 #for i in range(10) :
 _, frame = cap.read()
@@ -85,8 +116,9 @@ while (True) :
             name = input("ok lets go !\nType your name : ")
             response = cf.person.create(PERSON_GROUP_ID, name, str(len(cf.person.lists(PERSON_GROUP_ID))))
             person_id = response['personId']
-            shoot(cap)
-            cf.person.add_face('./register.jpg', PERSON_GROUP_ID, person_id)
+            if shoot(cap) == False :
+                cap.release()
+                cap = cv2.VideoCapture(0)
             print("Training phase ...")
             cf.person_group.train(PERSON_GROUP_ID)
             print("Alright I will remember you !")
