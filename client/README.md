@@ -2,7 +2,7 @@
 
 ### Client side for the Robot ###
 
-## Required:
+## Requirement
 
 Lastest version of NodeJS and npm.
 
