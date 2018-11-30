@@ -20,7 +20,7 @@ void setup() {
   eyesY.attach(12);
   neckX.write(90);
   neckY.write(90);
-  jaw.write(65);
+  jaw.write(60);
   eyesX.write(100);
   eyesY.write(70);
 }
@@ -35,7 +35,7 @@ void moveServoTo(int angle, char axis) {
   if (axis == 'z') {
     neckX.write(90);
     neckY.write(90);
-    jaw.write(65);
+    jaw.write(60);
     eyesX.write(100);
     eyesY.write(70);
   }
@@ -59,7 +59,7 @@ void moveServoTo(int angle, char axis) {
   else if (axis == 'j') {
     last_pos = jaw.read();
     pos = last_pos + angle;
-    if (pos > 130 || pos < 65)
+    if (pos > 130 || pos < 60)
       return;
     jaw.write(pos);
     return;

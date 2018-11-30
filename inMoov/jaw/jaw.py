@@ -21,7 +21,7 @@ currentJawPos = 45
 
 def move_jaw(val) :
     global currentJawPos
-    update_pos = int(val * 115 / 100)
+    update_pos = int(val * 90 / 100)
     diff = update_pos - currentJawPos
     currentJawPos = currentJawPos + diff
 
