@@ -1,43 +1,17 @@
-Hello welcome to the installer guide for Django the receptionist !
+# HackatonOpenBanking
 
-First we going to install all dependencies :
-(depending on your distribution you should use apt, dnf or yum ...)
+### Movement control for the Robot ###
 
-WARNING : IF THE HARDWARE IS NOT CONNECTED, THAT WILL NOT WORK. 
+## Requirement
 
-At the root of the repository :
+Lastest version of python3 and pip3
 
-    1 - Python3 :
-Python3 is the version of python we used to program all features about the robot.
-$> sudo apt install python3
+## Installation
 
+Run ```sudo apt install opencv-python3``` to install OpenCV.
+Run ```sudo apt install python3-pyAudio``` to install pyAudio.
+Run ```sudo pip3 install -r requirment.txt``` to install all dependencies.
 
-    2 - pip3 :
-pip3 is the installer environement for python3.
-$> sudo apt install python3-pip
+## Launching
 
-
-    3 - OpenCV :
-OpenCV is the library we used for the robot vision.
-$> sudo apt install opencv-python3
-
-
-    4 - pyAudio :
-We used pyAudio to annalyse audio spectrum to do a lip sync.
-$> sudo apt install python3-pyAudio 
-
-
-    5 - all program dependencies :
-Then we going to install all dependencies the program need to work properly.
-$> sudo pip3 install -r inMoov/requirment.txt
-
-
-
-HOW TO RUN ?
-
-/! you can chose the serial port where arduino is connected by indicate on config.txt the path of the serial port. !\
-
-$> cd inMoov/
-$> sudo python3 main.py
-
-ENJOY !
+Run ```sudo python3 main.py``` to animate the Robot.
