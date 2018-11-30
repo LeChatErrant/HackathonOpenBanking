@@ -3,8 +3,9 @@ Hello welcome to the installer guide for Django the receptionist !
 First we going to install all dependencies :
 (depending on your distribution you should use apt, dnf or yum ...)
 
-At the root of the repository :
+WARNING : IF THE HARDWARE IS NOT CONNECTED, THAT WILL NOT WORK. 
 
+At the root of the repository :
 
     1 - Python3 :
 Python3 is the version of python we used to program all features about the robot.
@@ -31,7 +32,10 @@ Then we going to install all dependencies the program need to work properly.
 $> sudo pip3 install -r inMoov/requirment.txt
 
 
+
 HOW TO RUN ?
+
+/! you can chose the serial port where arduino is connected by indicate on config.txt the path of the serial port. !\
 
 $> cd inMoov/
 $> sudo python3 main.py
