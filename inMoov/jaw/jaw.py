@@ -5,6 +5,7 @@ import time
 import wave
 import numpy as np
 import pyaudio
+from utils import getSerialPort
 
 
 CHUNK = 1024
@@ -15,7 +16,8 @@ if (len(sys.argv) > 1 and sys.argv[1] == "--unplugged") :
     unplug = True
 
 if not unplug :
-    jaw = serial.Serial("/dev/ttyUSB0", 9600)
+    port = getSerialPort()
+    jaw = serial.Serial(port, 9600)
 
 currentJawPos = 45
 
