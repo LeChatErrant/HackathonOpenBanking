@@ -7,7 +7,8 @@ import time
 
 class InMoov :
     def __init__(self, eyes_sens) :
-        self.head = serial.Serial("/dev/ttyUSB0", 9600)
+        serial_port = getSerialPort()
+        self.head = serial.Serial(serial_port, 9600)
         self.neck = Neck()
 
         self.head.write("z0,\n".encode())

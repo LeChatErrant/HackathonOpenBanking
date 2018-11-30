@@ -21,4 +21,9 @@ def moveHead(head, degree, eyes_pos) :
         eyes_pos = 2
     head.write(degree.encode())
         
-        
+def getSerialPort() :
+    file = open("config.txt", "r")
+
+    for line in file :
+        if "Serial_port" in line :
+            return(line[13:])
