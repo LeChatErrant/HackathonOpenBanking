@@ -1,0 +1,5 @@
+{
+	"certPath": "./ssl/cert.pem",
+	"keyPath": "./ssl/key.pem",
+	"port": 7999
+}
