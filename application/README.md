@@ -14,7 +14,7 @@ Install node latest version and npm. Run ```npm install``` to install all the de
 
 Run ```npm start```, and go to [this page](http://localhost:4200)
 
-### Deployment instruction
+## Deployment instruction
 
 Open the config.json at the root of the project, and write your own ssl certificate path, ssl key path, and port.
 Run ```node app.js``` on your server to serve the application on your own DNS, at the port you choosed, in HTTPS.
