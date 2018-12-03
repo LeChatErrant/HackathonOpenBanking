@@ -41,13 +41,17 @@ console.log(`Listening on ${port} with HTTPS...`);
 
 //ROUTING
 app.use('/', routes);
+app.post('/FaceRecognition', (req, res) => {
+	process.stdin.write(req.body.result + "\n");
+	res.send();
+});
 
 //Socket.IO server
 let socket;
 const io = require('socket.io')(httpsServer);
 
 let toggle = false;
-io.on('connection', function(sock){
+io.on('connection', function(sock) {
 	socket = sock;
 	console.log('A new user connected\n');
 	socket.once('disconnect', () => {
@@ -58,8 +62,8 @@ io.on('connection', function(sock){
 });
 
 //Testing purpose only, to delete before release
-let stdin = process.openStdin();
-stdin.on('data', chunk => {
+//let stdin = process.openStdin();
+process.stdin.on('data', chunk => {
 	if (!socket) {
 		console.log("No client connected!");
 		return;
