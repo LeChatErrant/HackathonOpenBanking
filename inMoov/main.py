@@ -1,8 +1,8 @@
 from utils import *
 import cv2
 import keyboard
-from inMoov import InMoov
-from track import Tracking
+from inMoov.inMoov import InMoov
+from track.track import Tracking
 
 cam = cv2.VideoCapture(2)
 inMoov = InMoov(20)

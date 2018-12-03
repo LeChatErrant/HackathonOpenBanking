@@ -1,6 +1,9 @@
 import cognitive_face as cf
 import cv2
 import time
+import requests
+
+SERVER_ADRESS = "   "
 
 def identify_person(face_ids, PERSON_GROUP_ID) :
     identified_faces = cf.face.identify(face_ids, PERSON_GROUP_ID)
@@ -10,7 +13,8 @@ def identify_person(face_ids, PERSON_GROUP_ID) :
         return (False)
     for person in db :
         if (person['personId'] == identified_faces[0]['candidates'][0]['personId']) :
-            print("Hello ", person['name'], "!")
+            payload = {'result': person['name']}
+            r = requests.post(SERVER_ADRESS, data=payload)
             return (True)
     return (False)
 
