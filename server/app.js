@@ -42,6 +42,7 @@ console.log(`Listening on ${port} with HTTPS...`);
 //ROUTING
 app.use('/', routes);
 app.post('/FaceRecognition', (req, res) => {
+	console.log("Recognized ", req.body.result);
 	process.stdin.emit("data", req.body.result);
 	res.send();
 });
